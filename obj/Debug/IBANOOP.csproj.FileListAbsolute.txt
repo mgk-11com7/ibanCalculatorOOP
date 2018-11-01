@@ -1,0 +1,6 @@
+c:\CSharpProjekte\IBANOOP\IBANOOP\obj\Debug\IBANOOP.csprojResolveAssemblyReference.cache
+c:\CSharpProjekte\IBANOOP\IBANOOP\bin\Debug\IBANOOP.exe.config
+c:\CSharpProjekte\IBANOOP\IBANOOP\bin\Debug\IBANOOP.exe
+c:\CSharpProjekte\IBANOOP\IBANOOP\bin\Debug\IBANOOP.pdb
+c:\CSharpProjekte\IBANOOP\IBANOOP\obj\Debug\IBANOOP.exe
+c:\CSharpProjekte\IBANOOP\IBANOOP\obj\Debug\IBANOOP.pdb
