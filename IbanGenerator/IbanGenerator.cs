@@ -42,12 +42,65 @@ namespace IbanOop
         }
 		#endregion
 		
-		public string getIban() {
-			return this.iban;
-		}
+		#region constructors
 		public IbanGenerator(GenerateIbanStruct generateIbanStruct)
 		{
-			this.iban = "DE0712341234123412";
+			this.generateIbanStruct = generateIbanStruct;
+			this.iban = this.GenerateIban();
 		}
+		#endregion
+		
+		#region workers
+		public string GetIban() {
+			return this.iban;
+		}
+		
+		private string GenerateIban()
+		{
+		    string strCountryCode = CountryCodeLookUp();
+		    string strVerificationNumber = VerificationNumberGenerator(this.generateIbanStruct._bban + strCountryCode);
+		    string strIbanNumber =  this.generateIbanStruct._countryCode + strVerificationNumber + this.generateIbanStruct._bban;
+		    return strIbanNumber;
+		}
+		
+		/* 
+		 * generates country code numbers used for iban vailidation 
+		 * by given 2-Characters Country string
+		 * 
+		 * @param string strCountry (2 Characters)
+		 * @return string country code as numbers 
+		 */
+		private string CountryCodeLookUp()
+		{
+		    string strCountryCode = "";
+		    strCountryCode = Utils.MergeStringToNumbers(this.generateIbanStruct._countryCode);
+		    // merge country code to 6 characters
+		    while (strCountryCode.Length < 6)
+		    {
+		        strCountryCode = strCountryCode + "0";
+		    }
+		    return strCountryCode;
+		}
+		
+		/* 
+		 * Generates the verification number of a given BBAN
+		 * 
+		 * @param string the bban used as base for the calculation
+		 * @return string the verification number
+		 */
+		private string VerificationNumberGenerator(string strBasicBankAccountNumber)
+		{
+			string mergedBban = Utils.MergeStringToNumbers(strBasicBankAccountNumber);
+			decimal decVerificationNumber = 98 - Utils.Modulo(mergedBban,97);
+		    string strVerificationNumber = decVerificationNumber.ToString();
+		    
+		    // merge verification number to 2 characters
+		    while (strVerificationNumber.Length < 2)
+		    {
+		        strVerificationNumber = "0" + strVerificationNumber;
+		    }
+		    return strVerificationNumber;
+		}
+		#endregion
 	}
 }

@@ -16,6 +16,7 @@ namespace IbanOop
 		#region properties
 		private MenuChoiceStruct[] _menuChoices;
 		private CountryStruct[] _countryStructs;
+		public Menu _generateIbanMenu;
 		#endregion
 		
 		#region accessors
@@ -51,6 +52,24 @@ namespace IbanOop
 		#endregion
 		
 		#region workers
+		#region publicworkers
+		
+		public void MainMenu() {
+			Menu mainMenu = new Menu(this.menuChoices);
+			while(true) {	//Main Menu runs in endless loop until exit is chosen
+				mainMenu.handle();
+			}
+		}
+		
+		public void GenerateIban() {
+			string bban = "12341234123412";
+			GenerateIbanStruct generateIbanStruct = new GenerateIbanStruct(this.countryStructs[_generateIbanMenu.selectedItemId]._countryCode,bban);
+			Iban iban = new Iban(generateIbanStruct);
+			Console.Write(iban.getIban());
+			Utils.Wait();
+		}
+		#endregion
+		#region privateworkers
 		private CountryStruct[] CountryStructLoader() {
 			string[] countries;
 			countries = Utils.LoadCsv("countries.csv","Data/",2);
@@ -67,7 +86,7 @@ namespace IbanOop
 		
 		private void Init() {
 			MenuChoiceStruct[] menuElements= {
-				new MenuChoiceStruct("IBAN generieren",this.GenerateIban),
+				new MenuChoiceStruct("IBAN generieren",this.GenerateIbanController),
 				new MenuChoiceStruct("IBAN validieren",this.ValidateIban),
 				new MenuChoiceStruct("Programm beenden",Utils.Exit),
 			};
@@ -75,28 +94,27 @@ namespace IbanOop
 			this.countryStructs = this.CountryStructLoader();
 		}
 		
-		public void Menu() {
-			new Menu(this.menuChoices);
-		}
-		
-		private void GenerateIban() {
-			GenerateIbanStruct generateIbanStruct = new GenerateIbanStruct("DE","12341234123412");
-			Iban iban = new Iban(generateIbanStruct);
-			Console.Write(iban.getIban());
-			Utils.Wait();
+		private void GenerateIbanController() {
+			MenuChoiceStruct[] options= new MenuChoiceStruct[this.countryStructs.Length];
+			for(int i = 0; i < this.countryStructs.Length; i++)
+			{
+				options[i] =  new MenuChoiceStruct(this.countryStructs[i]._countryName,this.GenerateIban);
+			}
+			this._generateIbanMenu = new Menu(options);
+			this._generateIbanMenu.handle();
 		}
 		
 		private void ValidateIban() {
 			Iban iban = new Iban("DE0712341234123412");
 			
 			if (true==iban.IsValid()) {
-				Console.Write("given iban is valide!");
+				Console.Write("given iban is valid!");
 			} else {
-				Console.Write("given iban is NOT valide!");
+				Console.Write("given iban is NOT valid!");
 			}
 			Utils.Wait();
 		}
-		
+		#endregion
 		#endregion
 	}
 }

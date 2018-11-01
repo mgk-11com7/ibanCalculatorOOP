@@ -12,8 +12,6 @@ using System;
 
 namespace IbanOop
 {
-
-	
 	struct CountryStruct
 	{
 		private static string BbanFormatLookUp(string bbanFormatCode) {

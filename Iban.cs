@@ -59,7 +59,7 @@ namespace IbanOop
 		public Iban(GenerateIbanStruct ibanStruct)
 		{
 			this.ibanGenerator = new IbanGenerator(ibanStruct);
-			this.iban = this.ibanGenerator.getIban();
+			this.iban = this.ibanGenerator.GetIban();
 		}
 		
 		public Iban(string iban)

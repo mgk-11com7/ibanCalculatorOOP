@@ -100,5 +100,46 @@ namespace IbanOop
 		    }
 		    Console.ResetColor();
 		}
+		
+
+		/*
+		 * modulo operation by string because default data types cant handle such big numbers
+		 * 
+		 * @param string num the number used as base for the calculation
+		 * @param int the modulo operation value
+		 * @return int the result of the calculaton
+		 */
+		public static int Modulo(String num, int mod) 
+		{ 
+		    int result = 0;
+		    for (int i = 0; i < num.Length; i++) {
+		        result = (result * 10 + (int)num[i]- '0') % mod; 
+		    }
+		    return result; 
+		}
+		
+		/* 
+		 * merges iban letters to numbers used for validation
+		 * (A=65,B=66,... becomes A=10,B=11,... and so on)
+		 * 
+		 * @param string the letter containing text
+		 * @return string only numbers containing text
+		 */
+		public static string MergeStringToNumbers(string text) {
+		    int index;
+			string textCode="";
+		    foreach (char c in text)
+		    {
+		    	if (Char.IsNumber(c)) {
+		    		textCode = textCode + c;
+		    	} else {
+		        // using ascii table to match letters to Numbers (A=65,B=66,... becomes A=10,B=11,... and so on)
+		        	index = char.ToUpper(c) - 64 + 9;
+		        	textCode = textCode + index;
+		    	}
+		    }
+			return textCode;
+		}
+		
 	}
 }

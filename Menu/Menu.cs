@@ -73,9 +73,6 @@ namespace IbanOop
 		public Menu(MenuChoiceStruct[] elements)
 		{
 			_elements = elements;
-			while(true) {
-				this.handle();
-			}
 		}
 		
 		public int handle() {
