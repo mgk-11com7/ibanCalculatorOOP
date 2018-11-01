@@ -16,7 +16,7 @@ namespace IbanOop
 	
 	struct CountryStruct
 	{
-		public static string BbanFormatLookUp(string bbanFormatCode) {
+		private static string BbanFormatLookUp(string bbanFormatCode) {
 			string i;
 			int iSum;
 			string bbanFormat="";
@@ -54,7 +54,7 @@ namespace IbanOop
     		_countryCode = ibanFormat.Substring(0, 2);
 	    	_ibanFormat = ibanFormat;
 		    _bbanFormatCode = bbanFormatCode;
-		    _bbanFormat = BbanFormatLookUp(bbanFormatCode);
+		    _bbanFormat = CountryStruct.BbanFormatLookUp(bbanFormatCode);
 	    }
 	}
 }

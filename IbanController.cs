@@ -65,14 +65,13 @@ namespace IbanOop
 			return countriesStruct;
 		}
 		
-		
 		private void Init() {
-			MenuChoiceStruct[] menuChoices= {
+			MenuChoiceStruct[] menuElements= {
 				new MenuChoiceStruct("IBAN generieren",this.GenerateIban),
 				new MenuChoiceStruct("IBAN validieren",this.ValidateIban),
 				new MenuChoiceStruct("Programm beenden",Utils.Exit),
 			};
-			this.menuChoices = menuChoices;
+			this.menuChoices = menuElements;
 			this.countryStructs = this.CountryStructLoader();
 		}
 		
@@ -81,18 +80,21 @@ namespace IbanOop
 		}
 		
 		private void GenerateIban() {
-			
+			GenerateIbanStruct generateIbanStruct = new GenerateIbanStruct("DE","12341234123412");
+			Iban iban = new Iban(generateIbanStruct);
+			Console.Write(iban.getIban());
+			Utils.Wait();
 		}
 		
 		private void ValidateIban() {
-			Iban iban = new Iban("DE12341234123412");
+			Iban iban = new Iban("DE0712341234123412");
 			
 			if (true==iban.IsValid()) {
 				Console.Write("given iban is valide!");
 			} else {
 				Console.Write("given iban is NOT valide!");
 			}
-			Console.ReadLine();
+			Utils.Wait();
 		}
 		
 		#endregion

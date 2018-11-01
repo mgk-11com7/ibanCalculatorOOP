@@ -55,11 +55,11 @@ namespace IbanOop
 			} catch (Exception exception)  {
 				if (tries==0) {
 					data = new string[] { "error" };
-					ThrowError("Cant Load " + filename);
+					Utils.ThrowError("Cant Load " + filename);
 					Wait();
 					Exit();
 				} else {
-					data = LoadCsv(filename, "../"+path,tries-1);
+					data = Utils.LoadCsv(filename, "../"+path,tries-1);
 				}
 			}
 			return data;
@@ -72,7 +72,7 @@ namespace IbanOop
 		 *	@return void
 		 */
 		public static void ThrowError(string errorMsg) {
-			PrintHeader();
+			Utils.PrintHeader();
 			Console.ForegroundColor = ConsoleColor.Red;
 			Console.WriteLine("");
 			Console.Write("Fehler: ");
