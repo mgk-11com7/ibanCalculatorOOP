@@ -81,6 +81,15 @@ namespace IbanOop
 			Console.WriteLine("");
 		}
 		
+		public static string SpaceShifter(string str,int step) {
+			for (int i = step; i <= str.Length; i += step)
+			    {
+			        str = str.Insert(i, " ");
+			        i++;
+			    }
+			return str;
+		}
+		
 		public static void Exit() {
        		System.Environment.Exit(1);
 		}

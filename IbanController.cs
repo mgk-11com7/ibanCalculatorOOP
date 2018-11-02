@@ -16,7 +16,7 @@ namespace IbanOop
 		#region properties
 		private MenuChoiceStruct[] _menuChoices;
 		private CountryStruct[] _countryStructs;
-		public Menu _generateIbanMenu;
+		private Menu _generateIbanMenu;
 		#endregion
 		
 		#region accessors
@@ -42,6 +42,17 @@ namespace IbanOop
                 _menuChoices = value;
             }
         }
+		private Menu generateIbanMenu
+        {
+            get
+            {
+                return this._generateIbanMenu;
+            }
+            set
+            {
+                _generateIbanMenu = value;
+            }
+        }
 		#endregion
 		
 		#region constructors
@@ -52,6 +63,7 @@ namespace IbanOop
 		#endregion
 		
 		#region workers
+		
 		#region publicworkers
 		
 		public void MainMenu() {
@@ -63,13 +75,16 @@ namespace IbanOop
 		
 		public void GenerateIban() {
 			string bban = "12341234123412";
-			GenerateIbanStruct generateIbanStruct = new GenerateIbanStruct(this.countryStructs[_generateIbanMenu.selectedItemId]._countryCode,bban);
+			GenerateIbanStruct generateIbanStruct = new GenerateIbanStruct(this.countryStructs[generateIbanMenu.pos]._countryCode,bban);
 			Iban iban = new Iban(generateIbanStruct);
 			Console.Write(iban.getIban());
 			Utils.Wait();
 		}
+			
 		#endregion
+		
 		#region privateworkers
+			
 		private CountryStruct[] CountryStructLoader() {
 			string[] countries;
 			countries = Utils.LoadCsv("countries.csv","Data/",2);
@@ -95,13 +110,13 @@ namespace IbanOop
 		}
 		
 		private void GenerateIbanController() {
-			MenuChoiceStruct[] options= new MenuChoiceStruct[this.countryStructs.Length];
+			MenuChoiceStruct[] menuElements= new MenuChoiceStruct[this.countryStructs.Length];
 			for(int i = 0; i < this.countryStructs.Length; i++)
 			{
-				options[i] =  new MenuChoiceStruct(this.countryStructs[i]._countryName,this.GenerateIban);
+				menuElements[i] =  new MenuChoiceStruct(this.countryStructs[i]._countryName,this.GenerateIban);
 			}
-			this._generateIbanMenu = new Menu(options);
-			this._generateIbanMenu.handle();
+			this.generateIbanMenu = new Menu(menuElements);
+			this.generateIbanMenu.handle();
 		}
 		
 		private void ValidateIban() {
@@ -114,7 +129,10 @@ namespace IbanOop
 			}
 			Utils.Wait();
 		}
+			
 		#endregion
+			
 		#endregion
+		
 	}
 }

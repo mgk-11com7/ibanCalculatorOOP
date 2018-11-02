@@ -52,9 +52,11 @@ namespace IbanOop
         }
 		#endregion
 		
+		#region public accessors
 		public string getIban() {
 			return this.iban;
 		}
+		#endregion
 		
 		public Iban(GenerateIbanStruct ibanStruct)
 		{
@@ -64,7 +66,7 @@ namespace IbanOop
 		
 		public Iban(string iban)
 		{
-			this._ibanValidator = new IbanValidator(iban);
+			this.ibanValidator = new IbanValidator(iban);
 			this.iban = iban;
 		}
 		
