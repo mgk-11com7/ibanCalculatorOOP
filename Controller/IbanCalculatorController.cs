@@ -8,7 +8,7 @@ using System;
 
 namespace IbanOop
 {
-	public class IbanController
+	public class IbanCalculatorController
 	{
 		
 		#region properties
@@ -54,7 +54,7 @@ namespace IbanOop
 		#endregion
 		
 		#region constructors
-		public IbanController()
+		public IbanCalculatorController()
 		{
 			this.Init();
 		}

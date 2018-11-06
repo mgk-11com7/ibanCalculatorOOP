@@ -48,7 +48,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\IbanController.cs" />
+    <Compile Include="Controller\IbanCalculatorController.cs" />
     <Compile Include="Controller\GenerateIbanController.cs" />
     <Compile Include="Controller\ValidateIbanController.cs" />
     <Compile Include="Controller\MenuController.cs" />

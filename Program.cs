@@ -13,7 +13,7 @@ namespace IbanOop
 		#region constructors
 		public static void Main(string[] args)
 		{
-			IbanController ibanController = new IbanController();
+			IbanCalculatorController ibanController = new IbanCalculatorController();
 			ibanController.MainMenu();
 		}
 		#endregion
