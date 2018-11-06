@@ -1,5 +1,4 @@
 ﻿/*
- * Created by SharpDevelop.
  * User: derStoffel
  * Date: 01.11.2018
  * Time: 02:18

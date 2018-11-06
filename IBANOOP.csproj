@@ -48,27 +48,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CountryStruct.cs" />
-    <Compile Include="Iban.cs" />
-    <Compile Include="IbanController.cs" />
-    <Compile Include="IbanGenerator\GenerateIbanStruct.cs" />
-    <Compile Include="IbanGenerator\IbanGenerator.cs" />
-    <Compile Include="IbanValidator\IbanValidator.cs" />
-    <Compile Include="Menu\Menu.cs" />
-    <Compile Include="Menu\MenuChoiceStruct.cs" />
+    <Compile Include="Controller\IbanController.cs" />
+    <Compile Include="Controller\GenerateIbanController.cs" />
+    <Compile Include="Controller\ValidateIbanController.cs" />
+    <Compile Include="Controller\MenuController.cs" />
+    <Compile Include="Entity\CountryStruct.cs" />
+    <Compile Include="Entity\GenerateIbanStruct.cs" />
+    <Compile Include="Entity\IbanEntity.cs" />
+    <Compile Include="Entity\MenuChoiceStruct.cs" />
+    <Compile Include="Helper\Utils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Data\countries.csv" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="IbanGenerator" />
-    <Folder Include="IbanValidator" />
     <Folder Include="Data" />
-    <Folder Include="Menu" />
+    <Folder Include="Controller" />
+    <Folder Include="Entity" />
+    <Folder Include="Helper" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

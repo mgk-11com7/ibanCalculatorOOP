@@ -1,5 +1,4 @@
 ﻿/*
- * Created by SharpDevelop.
  * User: derStoffel
  * Date: 01.11.2018
  * Time: 15:51
@@ -12,7 +11,7 @@ using System;
 
 namespace IbanOop
 {
-	struct CountryStruct
+	public struct CountryStruct
 	{
 		
 	    public string _countryName;

@@ -10,9 +10,10 @@ using System;
 
 namespace IbanOop
 {
-	public class IbanValidator
+	public class ValidateIbanController
 	{
 		#region properties
+		private CountryStruct[] _countryStructs;
 		private string _iban;
 		#endregion
 		
@@ -30,8 +31,9 @@ namespace IbanOop
 	    }
 		#endregion
 		
-		public IbanValidator(string iban)
+		public ValidateIbanController(CountryStruct[] countryStructs,string iban)
 		{
+			this._countryStructs = countryStructs;
 			this.iban = iban;
 		}
 		

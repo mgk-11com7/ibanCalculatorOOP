@@ -1,5 +1,4 @@
 ﻿/*
- * Created by SharpDevelop.
  * User: derStoffel
  * Date: 01.11.2018
  * Time: 18:18
@@ -10,12 +9,11 @@ using System;
 
 namespace IbanOop
 {
-	public class Iban
+	public class IbanEntity
 	{
 		private string _iban;
-		private IbanValidator _ibanValidator;
-		private IbanGenerator _ibanGenerator;
-		
+		private ValidateIbanController _ibanValidator;
+		private GenerateIbanController _ibanGenerator;
 		#region accessors
 		private string iban
         {
@@ -28,7 +26,7 @@ namespace IbanOop
                 _iban = value;
             }
         }
-		private IbanValidator ibanValidator
+		private ValidateIbanController ibanValidator
         {
             get
             {
@@ -39,7 +37,7 @@ namespace IbanOop
                 _ibanValidator = value;
             }
         }
-		private IbanGenerator ibanGenerator
+		private GenerateIbanController ibanGenerator
         {
             get
             {
@@ -58,15 +56,15 @@ namespace IbanOop
 		}
 		#endregion
 		
-		public Iban(GenerateIbanStruct ibanStruct)
+		public IbanEntity(CountryStruct[] countryStructs,GenerateIbanStruct ibanStruct)
 		{
-			this.ibanGenerator = new IbanGenerator(ibanStruct);
+			this.ibanGenerator = new GenerateIbanController(countryStructs,ibanStruct);
 			this.iban = this.ibanGenerator.GetIban();
 		}
 		
-		public Iban(string iban)
+		public IbanEntity(CountryStruct[] countryStructs,string iban)
 		{
-			this.ibanValidator = new IbanValidator(iban);
+			this.ibanValidator = new ValidateIbanController(countryStructs,iban);
 			this.iban = iban;
 		}
 		

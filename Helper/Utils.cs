@@ -1,5 +1,4 @@
 ﻿/*
- * Created by SharpDevelop.
  * User: derStoffel
  * Date: 01.11.2018
  * Time: 16:30
@@ -45,6 +44,45 @@ namespace IbanOop
 					cki = Console.ReadKey(true);
 				}
 			}
+		}
+		
+		/* 
+		 * generates country code numbers used for iban vailidation 
+		 * by given 2-Characters Country string
+		 * 
+		 * @param string strCountry (2 Characters)
+		 * @return string country code as numbers 
+		 */
+		public static string CountryCodeLookUp(string countryCode)
+		{
+		    string strCountryCode = "";
+		    strCountryCode = Utils.MergeStringToNumbers(countryCode);
+		    // merge country code to 6 characters
+		    while (strCountryCode.Length < 6)
+		    {
+		        strCountryCode = strCountryCode + "0";
+		    }
+		    return strCountryCode;
+		}
+		
+		/* 
+		 * Generates the verification number of a given BBAN
+		 * 
+		 * @param string the bban used as base for the calculation
+		 * @return string the verification number
+		 */
+		public static string VerificationNumberGenerator(string strBasicBankAccountNumber)
+		{
+			string mergedBban = Utils.MergeStringToNumbers(strBasicBankAccountNumber);
+			decimal decVerificationNumber = 98 - Utils.Modulo(mergedBban,97);
+		    string strVerificationNumber = decVerificationNumber.ToString();
+		    
+		    // merge verification number to 2 characters
+		    while (strVerificationNumber.Length < 2)
+		    {
+		        strVerificationNumber = "0" + strVerificationNumber;
+		    }
+		    return strVerificationNumber;
 		}
 		
 		public static string[] LoadCsv(string filename,string path,int tries) {
@@ -148,6 +186,15 @@ namespace IbanOop
 		    	}
 		    }
 			return textCode;
+		}
+
+		public static CountryStruct GetCountryStructByCountryCode(CountryStruct[] countryStructs,string countryCode) {
+			CountryStruct countryStruct = new CountryStruct("",0,"","");
+			foreach(CountryStruct e in countryStructs) {
+				if (e._countryCode==countryCode)
+					countryStruct=e;
+			}
+			return countryStruct;
 		}
 		
 	}

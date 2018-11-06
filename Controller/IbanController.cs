@@ -1,5 +1,4 @@
 ﻿/*
- * Created by SharpDevelop.
  * User: derStoffel
  * Date: 01.11.2018
  * Time: 02:18
@@ -16,7 +15,7 @@ namespace IbanOop
 		#region properties
 		private MenuChoiceStruct[] _menuChoices;
 		private CountryStruct[] _countryStructs;
-		private Menu _generateIbanMenu;
+		private MenuController _generateIbanMenu;
 		#endregion
 		
 		#region accessors
@@ -42,7 +41,7 @@ namespace IbanOop
                 _menuChoices = value;
             }
         }
-		private Menu generateIbanMenu
+		private MenuController generateIbanMenu
         {
             get
             {
@@ -67,7 +66,7 @@ namespace IbanOop
 		#region publicworkers
 		
 		public void MainMenu() {
-			Menu mainMenu = new Menu(this.menuChoices);
+			MenuController mainMenu = new MenuController(this.menuChoices);
 			while(true) {	//Main Menu runs in endless loop until exit is chosen
 				mainMenu.handle();
 			}
@@ -76,7 +75,7 @@ namespace IbanOop
 		public void GenerateIban() {
 			string bban = "12341234123412";
 			GenerateIbanStruct generateIbanStruct = new GenerateIbanStruct(this.countryStructs[generateIbanMenu.pos]._countryCode,bban);
-			Iban iban = new Iban(generateIbanStruct);
+			IbanEntity iban = new IbanEntity(this.countryStructs,generateIbanStruct);
 			Console.Write(iban.getIban());
 			Utils.Wait();
 		}
@@ -115,12 +114,12 @@ namespace IbanOop
 			{
 				menuElements[i] =  new MenuChoiceStruct(this.countryStructs[i]._countryName,this.GenerateIban);
 			}
-			this.generateIbanMenu = new Menu(menuElements);
+			this.generateIbanMenu = new MenuController(menuElements);
 			this.generateIbanMenu.handle();
 		}
 		
 		private void ValidateIban() {
-			Iban iban = new Iban("DE0712341234123412");
+			IbanEntity iban = new IbanEntity(this.countryStructs,"DE0712341234123412");
 			
 			if (true==iban.IsValid()) {
 				Console.Write("given iban is valid!");

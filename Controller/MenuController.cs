@@ -12,7 +12,7 @@ namespace IbanOop
 {
 	public delegate void MenuChoiceCallback();
 	
-	public class Menu
+	public class MenuController
 	{
 		#region properties
 		private int _maxElementsPerPage = 10;
@@ -83,7 +83,7 @@ namespace IbanOop
         }
 		#endregion
 		
-		public Menu(MenuChoiceStruct[] elements)
+		public MenuController(MenuChoiceStruct[] elements)
 		{
 			_elements = elements;
 		}
