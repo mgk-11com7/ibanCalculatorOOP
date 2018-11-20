@@ -19,6 +19,7 @@ namespace IbanOop
 	    public string _ibanFormat;
 	    public string _bbanFormatCode;
 	    public string _bbanFormat;
+	    
 	    public CountryEntity(string countryName,int ibanLength,string ibanFormat,string bbanFormatCode) {
 	    	_countryName = countryName;
 	    	_ibanLength = ibanLength;

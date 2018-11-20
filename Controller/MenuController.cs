@@ -8,20 +8,32 @@ using System;
 
 namespace IbanOop
 {
+	public interface MenuEntityInterface
+	{
+		MenuChoiceEntity[] GetMenuChoiceElements();
+	}
+	
 	public delegate void MenuChoiceCallback();
 	
 	public class MenuController
 	{
 		#region properties
-		private int _maxElementsPerPage = 10;
+		private const int _maxElementsPerPage = 10;
 		private int _page = 1;
-		private int _pos=0;
+		private int _pos = 0;
 		private MenuChoiceEntity[] _elements;
 		private string _elementSelected = "[X] ";
 		private string _elementNotSelected = "[ ] ";
 		#endregion
 		
 		#region accessors
+		public int maxElementsPerPage
+        {
+            get
+            {
+                return _maxElementsPerPage;
+            }
+        }
 		public int page
         {
             get
@@ -68,7 +80,7 @@ namespace IbanOop
             }
         }
 		
-		private MenuChoiceEntity[] elements
+		public MenuChoiceEntity[] elements
         {
             get
             {
@@ -81,10 +93,11 @@ namespace IbanOop
         }
 		#endregion
 		
-		public MenuController(MenuChoiceEntity[] elements)
+		public MenuController(MenuEntityInterface MenuEntityInterface)
 		{
-			_elements = elements;
+			this._elements = MenuEntityInterface.GetMenuChoiceElements();
 		}
+		
 		
 		public int handle() {
 			bool finalSelectionDone=false;
@@ -101,7 +114,6 @@ namespace IbanOop
 		}
 		
 		public bool input() {
-			
 		    ConsoleKeyInfo cki;
 		    cki = Console.ReadKey(true);
 		    if ((cki.Key.ToString() == "DownArrow") || (cki.Key.ToString() == "RightArrow"))
@@ -124,21 +136,20 @@ namespace IbanOop
 		    {
 		    	return true;
 		    }
-			while (pos+1 >this._maxElementsPerPage*page) {
+			while (pos+1 >this.maxElementsPerPage*page) {
 	        	this._page++;
 			}
-			while (pos+1 < this._maxElementsPerPage*page-this._maxElementsPerPage+1) {
+			while (pos+1 < this.maxElementsPerPage*page-this.maxElementsPerPage+1) {
 	        	this._page--;
 			}
 		    return false;
 		}
 		
 		public void output() {
-			float floatMaxPages = (float) this.elements.Length/(float) this._maxElementsPerPage;
-			
+			float floatMaxPages = (float) this.elements.Length/(float) this.maxElementsPerPage;
 			Utils.PrintHeader();
 			for(int i=0;i<this.elements.Length;i++) {
-		    	if (this._maxElementsPerPage*page>i && i+1>this._maxElementsPerPage*(page-1))  {
+		    	if (this.maxElementsPerPage*page>i && i+1>this.maxElementsPerPage*(page-1))  {
 					
 					if (i == this.pos) {
 						Console.Write(this.elementSelected);

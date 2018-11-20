@@ -12,19 +12,19 @@ namespace IbanOop
 	{
 		
 		#region properties
-		private CountryEntity[] _countryStructs;
+		private CountryEntity[] _countryEntities;
 		#endregion
 		
 		#region accessors
-		private CountryEntity[] countryStructs
+		private CountryEntity[] countryEntities
         {
             get
             {
-                return this._countryStructs;
+                return this._countryEntities;
             }
             set
             {
-                _countryStructs = value;
+                _countryEntities = value;
             }
         }
 		#endregion
@@ -39,39 +39,65 @@ namespace IbanOop
 		
 		#region workers
 		#region publicworkers
+		
+		
 		private void Init() {
-			this.countryStructs = this.CountryEntityLoader();
+			this.countryEntities = this.CountryEntityLoader();
 		}
 		
 		private void Handle() {
-			MenuChoiceEntity[] menuElements= {
-				new MenuChoiceEntity("IBAN generieren",this.GenerateIbanRoute),
-				new MenuChoiceEntity("IBAN validieren",this.ValidateIbanRoute),
-				new MenuChoiceEntity("Programm beenden",Utils.Exit),
-			};
-			MenuController mainMenu = new MenuController(menuElements);
+			MainMenuEntity MainMenuEntity = new MainMenuEntity(this.countryEntities);
+			
+			MenuController mainMenu = new MenuController(MainMenuEntity);
 			while(true) {	//Main Menu runs in endless loop until exit is chosen
 				mainMenu.handle();
 			}
 		}
 		#endregion
 		
+		
+		#region static methods
+		
+		/*
+		 *  Waits for User interaction
+		 *	note: method overloading.
+		 * 
+		 *  @param bool (optional)	require Enter to continue or not
+		 * 	@return void
+		 */
+		
+		public static void Wait() { Wait(false); }
+		public static void Wait(bool requireEnter) {
+			if (requireEnter==false) {
+			    Console.WriteLine("");
+			    Console.WriteLine("Drücken Sie eine beliebige Taste zum fortfahren...");
+			    Console.ReadKey(true);
+			} else {
+				ConsoleKeyInfo cki;
+		        Console.WriteLine("");
+		        Console.WriteLine("Drücken Sie die ENTER-Taste zum fortfahren...");
+				cki = Console.ReadKey(true);
+				while(cki.Key.ToString()!="Enter") {
+					cki = Console.ReadKey(true);
+				}
+			}
+		}
+		
+		
+		#endregion 
+		
 		#region privateworkers
-		
-		
 		private string[] LoadCsv(string filename,string path,int tries) {
 			string[] data;
-			
 			try {
 				data = System.IO.File.ReadAllLines(@path+filename);
 			} catch (Exception exception)  {
 				if (tries==0) {
 					data = new string[] { "error" };
 					Utils.ThrowError("Cant Load " + filename);
-					Utils.Wait();
-					Utils.Exit();
+       				System.Environment.Exit(1);
 				} else {
-					data = this.LoadCsv(filename, "../"+path,tries-1);
+					data = this.LoadCsv(filename, "../" + path,tries-1);
 				}
 			}
 			return data;
@@ -79,27 +105,17 @@ namespace IbanOop
 		
 		private CountryEntity[] CountryEntityLoader() {
 			string[] countries;
-			countries = this.LoadCsv("countries.csv","Data/",2);
+			countries = this.LoadCsv("countries.csv","Ressources/",2);
 			
-			CountryEntity[] countriesStruct = new CountryEntity[countries.Length];
+			CountryEntity[] CountryEntities = new CountryEntity[countries.Length];
 			int c = 0;
 			foreach (string country in countries) {
 				string[] data = country.Split(';');
-				countriesStruct[c] = new CountryEntity(data[0],Int32.Parse(data[1]),data[2],data[3]);
+				CountryEntities[c] = new CountryEntity(data[0],Int32.Parse(data[1]),data[2],data[3]);
 				c++;
 			}
-			return countriesStruct;
+			return CountryEntities;
 		}
-		
-		
-		private void GenerateIbanRoute() {
-			GenerateIbanController ibanGenerator = new GenerateIbanController(this.countryStructs);
-		}
-		
-		private void ValidateIbanRoute() {
-			ValidateIbanController ibanValidator = new ValidateIbanController(this.countryStructs);
-		}
-			
 		#endregion
 			
 		#endregion

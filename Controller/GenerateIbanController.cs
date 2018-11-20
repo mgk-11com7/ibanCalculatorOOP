@@ -17,19 +17,21 @@ namespace IbanOop
 		#endregion
 		
 		#region constructors
-		public GenerateIbanController(CountryEntity[] countryStructs)
+		public GenerateIbanController(CountryEntity[] countryEntities)
 		{
-			MenuChoiceEntity[] menuElements= new MenuChoiceEntity[countryStructs.Length];
-			for(int i = 0; i < countryStructs.Length; i++)
-			{
-				menuElements[i] =  new MenuChoiceEntity(countryStructs[i]._countryName);
-			}
-			MenuController generateIbanMenu = new MenuController(menuElements);
+			InputController InputController = new InputController();
+			
+			SelectCountryMenuEntity SelectCountryMenuEntity = new SelectCountryMenuEntity(countryEntities);
+			MenuController generateIbanMenu = new MenuController(SelectCountryMenuEntity);
 			int pos = generateIbanMenu.handle();
-			string bban = "12341232123412";
-			string iban = this.GenerateIban(countryStructs[pos]._countryCode,bban);
-			Console.Write(iban);
-			Utils.Wait();
+			
+			string bban = InputController.fetchBban(countryEntities[pos]);
+			string iban = this.GenerateIban(countryEntities[pos]._countryCode,bban);
+			Utils.PrintHeader();
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.Write(Utils.SpaceShifter(iban,4));
+			Console.ResetColor();
+			MainController.Wait(true);
 		}
 		#endregion
 		
@@ -76,16 +78,16 @@ namespace IbanOop
 		 * @param string the bban used as base for the calculation
 		 * @return string the verification number
 		 */
-		private string VerificationNumberGenerator(string strBasicBankAccountNumber)
+		private string GenerateVerificationNumber(string strBasicBankAccountNumber)
 		{
 			string mergedBban = Utils.MergeStringToNumbers(strBasicBankAccountNumber);
 			decimal decVerificationNumber = 98 - this.Modulo(mergedBban,97);
 		    string strVerificationNumber = decVerificationNumber.ToString();
 		    
 		    // merge verification number to 2 characters
-		        strVerificationNumber = "0" + strVerificationNumber;
 		    while (strVerificationNumber.Length < 2)
 		    {
+		        strVerificationNumber = "0" + strVerificationNumber;
 		    }
 		    return strVerificationNumber;
 		}
@@ -93,7 +95,7 @@ namespace IbanOop
 		private string GenerateIban(string countryCode,string bban)
 		{
 		    string strCountryCode = this.CountryCodeLookUp(countryCode);
-		    string strVerificationNumber = this.VerificationNumberGenerator(bban + strCountryCode);
+		    string strVerificationNumber = this.GenerateVerificationNumber(bban + strCountryCode);
 		    string strIbanNumber =  countryCode + strVerificationNumber + bban;
 		    return strIbanNumber;
 		}

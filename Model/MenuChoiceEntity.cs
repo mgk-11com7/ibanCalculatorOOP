@@ -8,12 +8,7 @@ using System;
 
 namespace IbanOop
 {
-	
-	
-	/// <summary>
-	/// Description of MenuChoice.
-	/// </summary>
-	public class MenuChoiceEntity
+	public class MenuChoiceEntity 
 	{
 		public string _caption;	// element caption to be displayed in the menu
 		public MenuChoiceCallback _callback;	// holds a callback function delegate to be called when selected, if null menu returns element id

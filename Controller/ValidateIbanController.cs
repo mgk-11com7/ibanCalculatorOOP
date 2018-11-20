@@ -16,9 +16,24 @@ namespace IbanOop
 		#region accessors
 		#endregion
 		
-		public ValidateIbanController(CountryEntity[] countryStructs)
-		{
+
+		#region workers
+		public static CountryEntity GetCountryEntityByCountryCode(CountryEntity[] countryEntities,string countryCode) {
+			CountryEntity countryEntity = new CountryEntity("",0,"","");
+			foreach(CountryEntity e in countryEntities) {
+				if (e._countryCode==countryCode)
+					countryEntity=e;
+			}
+			return countryEntity;
 		}
+		
+		public ValidateIbanController(CountryEntity[] countryEntities)
+		{
+			InputController InputController = new InputController();
+			
+			string iban = InputController.fetchIban(countryEntities);
+		}
+		#endregion
 		
 	}
 }
