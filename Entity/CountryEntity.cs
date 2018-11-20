@@ -10,7 +10,7 @@ using System;
 
 namespace IbanOop
 {
-	public struct CountryStruct
+	public class CountryEntity
 	{
 		
 	    public string _countryName;
@@ -19,13 +19,13 @@ namespace IbanOop
 	    public string _ibanFormat;
 	    public string _bbanFormatCode;
 	    public string _bbanFormat;
-	    public CountryStruct(string countryName,int ibanLength,string ibanFormat,string bbanFormatCode) {
+	    public CountryEntity(string countryName,int ibanLength,string ibanFormat,string bbanFormatCode) {
 	    	_countryName = countryName;
 	    	_ibanLength = ibanLength;
     		_countryCode = ibanFormat.Substring(0, 2);
 	    	_ibanFormat = ibanFormat;
 		    _bbanFormatCode = bbanFormatCode;
-		    _bbanFormat = CountryStruct.BbanFormatLookUp(bbanFormatCode);
+		    _bbanFormat = CountryEntity.BbanFormatLookUp(bbanFormatCode);
 	    }
 	    
 		private static string BbanFormatLookUp(string bbanFormatCode) {

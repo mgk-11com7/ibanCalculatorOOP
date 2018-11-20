@@ -16,7 +16,7 @@ namespace IbanOop
 		private int _maxElementsPerPage = 10;
 		private int _page = 1;
 		private int _pos=0;
-		private MenuChoiceStruct[] _elements;
+		private MenuChoiceEntity[] _elements;
 		private string _elementSelected = "[X] ";
 		private string _elementNotSelected = "[ ] ";
 		#endregion
@@ -68,7 +68,7 @@ namespace IbanOop
             }
         }
 		
-		private MenuChoiceStruct[] elements
+		private MenuChoiceEntity[] elements
         {
             get
             {
@@ -81,7 +81,7 @@ namespace IbanOop
         }
 		#endregion
 		
-		public MenuController(MenuChoiceStruct[] elements)
+		public MenuController(MenuChoiceEntity[] elements)
 		{
 			_elements = elements;
 		}

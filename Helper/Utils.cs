@@ -45,62 +45,7 @@ namespace IbanOop
 			}
 		}
 		
-		/* 
-		 * generates country code numbers used for iban vailidation 
-		 * by given 2-Characters Country string
-		 * 
-		 * @param string strCountry (2 Characters)
-		 * @return string country code as numbers 
-		 */
-		public static string CountryCodeLookUp(string countryCode)
-		{
-		    string strCountryCode = "";
-		    strCountryCode = Utils.MergeStringToNumbers(countryCode);
-		    // merge country code to 6 characters
-		    while (strCountryCode.Length < 6)
-		    {
-		        strCountryCode = strCountryCode + "0";
-		    }
-		    return strCountryCode;
-		}
 		
-		/* 
-		 * Generates the verification number of a given BBAN
-		 * 
-		 * @param string the bban used as base for the calculation
-		 * @return string the verification number
-		 */
-		public static string VerificationNumberGenerator(string strBasicBankAccountNumber)
-		{
-			string mergedBban = Utils.MergeStringToNumbers(strBasicBankAccountNumber);
-			decimal decVerificationNumber = 98 - Utils.Modulo(mergedBban,97);
-		    string strVerificationNumber = decVerificationNumber.ToString();
-		    
-		    // merge verification number to 2 characters
-		    while (strVerificationNumber.Length < 2)
-		    {
-		        strVerificationNumber = "0" + strVerificationNumber;
-		    }
-		    return strVerificationNumber;
-		}
-		
-		public static string[] LoadCsv(string filename,string path,int tries) {
-			string[] data;
-			
-			try {
-				data = System.IO.File.ReadAllLines(@path+filename);
-			} catch (Exception exception)  {
-				if (tries==0) {
-					data = new string[] { "error" };
-					Utils.ThrowError("Cant Load " + filename);
-					Wait();
-					Exit();
-				} else {
-					data = Utils.LoadCsv(filename, "../"+path,tries-1);
-				}
-			}
-			return data;
-		}
 		
 		/* 
 		 *  Error Output and redirect to main menu
@@ -147,22 +92,6 @@ namespace IbanOop
 		    Console.ResetColor();
 		}
 		
-
-		/*
-		 * modulo operation by string because default data types cant handle such big numbers
-		 * 
-		 * @param string num the number used as base for the calculation
-		 * @param int the modulo operation value
-		 * @return int the result of the calculaton
-		 */
-		public static int Modulo(String num, int mod) 
-		{ 
-		    int result = 0;
-		    for (int i = 0; i < num.Length; i++) {
-		        result = (result * 10 + (int)num[i]- '0') % mod; 
-		    }
-		    return result; 
-		}
 		
 		/* 
 		 * merges iban letters to numbers used for validation
@@ -187,9 +116,9 @@ namespace IbanOop
 			return textCode;
 		}
 
-		public static CountryStruct GetCountryStructByCountryCode(CountryStruct[] countryStructs,string countryCode) {
-			CountryStruct countryStruct = new CountryStruct("",0,"","");
-			foreach(CountryStruct e in countryStructs) {
+		public static CountryEntity GetCountryEntityByCountryCode(CountryEntity[] countryStructs,string countryCode) {
+			CountryEntity countryStruct = new CountryEntity("",0,"","");
+			foreach(CountryEntity e in countryStructs) {
 				if (e._countryCode==countryCode)
 					countryStruct=e;
 			}
