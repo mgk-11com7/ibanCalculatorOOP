@@ -24,7 +24,7 @@ namespace IbanOop
 		
 		
 	   
-	   private  void FetchIbanOutput(bool success,string ibanFormatLine,string iban,bool showResult) {
+	   public void FetchIbanOutput(bool success,string ibanFormatLine,string iban,bool showResult) {
 		  	Utils.PrintHeader();
 		  	if (ibanFormatLine.Length==0) {
 		  		Console.WriteLine("");
@@ -75,7 +75,7 @@ namespace IbanOop
 					allowNumber=false;
 				}
 		    	if (pos==2) {
-		    		CountryEntity = Utils.GetCountryEntityByCountryCode(CountryEntities,input);
+		    		CountryEntity = ValidateIbanController.GetCountryEntityByCountryCode(CountryEntities,input);
 		    		ibanFormat =  CountryEntity._ibanFormat;
 		    	}
 		    	if (pos==2 || pos==3) {	//Verification Number
@@ -119,9 +119,8 @@ namespace IbanOop
 			        }
 				}
 		}
-			
-		MainController.Wait(true);
-			return "DE7212341232123412";
+		this.FetchIbanOutput(false,ibanFormat,input,false);
+		return input;
 	   }
 	   
 		#endregion

@@ -19,14 +19,32 @@ namespace IbanOop
 
 		#region workers
 		
+		public static CountryEntity GetCountryEntityByCountryCode(CountryEntity[] countryEntities,string countryCode) {
+			CountryEntity countryEntity = new CountryEntity();
+			foreach(CountryEntity e in countryEntities) {
+				if (e._countryCode==countryCode)
+					countryEntity=e;
+			}
+			return countryEntity;
+		}
+		
 		public ValidateIbanController(CountryEntity[] countryEntities)
 		{
 			ValidateIbanView ValidateIbanView = new ValidateIbanView();
 			IbanEntity IbanEntity = new IbanEntity(ValidateIbanView.FetchIban(countryEntities));
-			IbanEntity GeneratedIbanEntity = GenerateIbanController.GenerateIban(IbanEntity.GetCountryCode(),IbanEntity.GetBban());
-			Console.WriteLine(IbanEntity.GetIban());
-			Console.WriteLine(GeneratedIbanEntity.GetIban());
-			Console.ReadLine();
+			string countryCode = IbanEntity.GetCountryCode();
+			IbanEntity GeneratedIbanEntity = GenerateIbanController.GenerateIban(countryCode,IbanEntity.GetBban());
+			
+		    CountryEntity CountryEntity = ValidateIbanController.GetCountryEntityByCountryCode(countryEntities,countryCode);
+		    
+			bool success;
+			if (GeneratedIbanEntity.GetIban()==IbanEntity.GetIban()) {
+				success = true;
+			} else {
+				success = false;
+			}
+		    ValidateIbanView.FetchIbanOutput(success,CountryEntity._ibanFormat,IbanEntity.GetIban(),true);
+			MainController.Wait(true);
 		}
 		#endregion
 		

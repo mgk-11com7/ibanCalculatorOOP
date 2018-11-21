@@ -30,25 +30,29 @@ namespace IbanOop
 		#endregion
 		
 		#region constructors
-		private void Generate() {
-			this._iban = GenerateIbanController.GenerateIban(this._countryCode,this._bban).GetIban();
+		private string Generate() {
+			return GenerateIbanController.GenerateIban(this._countryCode,this._bban).GetIban();
 		}
 		
-		private void Validate() {
-			
+		private bool Validate() {
+			if (GenerateIbanController.GenerateIban(this._countryCode,this._bban).GetIban()==this.GetIban()) {
+				return true;
+			} else {
+				return false;
+			}
 		}
-			public IbanEntity(string countryCode,string bban)
-			{
-				this._countryCode = countryCode;
-				this._bban = bban;
-				this.Generate();
-			}
-			public IbanEntity(string iban)
-			{
-				this._iban = iban;
-				this._countryCode = iban.Substring(0,2);
-				this._bban = iban.Substring(4);
-			}
+		public IbanEntity(string countryCode,string bban)
+		{
+			this._countryCode = countryCode;
+			this._bban = bban;
+			this._iban = this.Generate();
+		}
+		public IbanEntity(string iban)
+		{
+			this._countryCode = iban.Substring(0,2);
+			this._bban = iban.Substring(4);
+			this._iban = iban;
+		}
 		#endregion
 		
 		#region workers

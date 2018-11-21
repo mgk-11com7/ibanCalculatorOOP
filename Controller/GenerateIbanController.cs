@@ -32,6 +32,30 @@ namespace IbanOop
 		#endregion
 		
 		#region workers
+		
+		/* 
+		 * merges iban letters to numbers used for validation
+		 * (A=65,B=66,... becomes A=10,B=11,... and so on)
+		 * 
+		 * @param string the letter containing text
+		 * @return string only numbers containing text
+		 */
+		public static string MergeStringToNumbers(string text) {
+		    int index;
+			string textCode="";
+		    foreach (char c in text)
+		    {
+		    	if (Char.IsNumber(c)) {
+		    		textCode = textCode + c;
+		    	} else {
+		        // using ascii table to match letters to Numbers (A=65,B=66,... becomes A=10,B=11,... and so on)
+		        	index = char.ToUpper(c) - 64 + 9;
+		        	textCode = textCode + index;
+		    	}
+		    }
+			return textCode;
+		}
+		
 		/* 
 		 * generates country code numbers used for iban vailidation 
 		 * by given 2-Characters Country string
@@ -42,7 +66,7 @@ namespace IbanOop
 		private static string CountryCodeLookUp(string countryCode)
 		{
 		    string strCountryCode = "";
-		    strCountryCode = Utils.MergeStringToNumbers(countryCode);
+		    strCountryCode = GenerateIbanController.MergeStringToNumbers(countryCode);
 		    // merge country code to 6 characters
 		    while (strCountryCode.Length < 6)
 		    {
@@ -76,7 +100,7 @@ namespace IbanOop
 		 */
 		private static string GenerateVerificationNumber(string strBasicBankAccountNumber)
 		{
-			string mergedBban = Utils.MergeStringToNumbers(strBasicBankAccountNumber);
+			string mergedBban = GenerateIbanController.MergeStringToNumbers(strBasicBankAccountNumber);
 			decimal decVerificationNumber = 98 - GenerateIbanController.Modulo(mergedBban,97);
 		    string strVerificationNumber = decVerificationNumber.ToString();
 		    

@@ -42,7 +42,7 @@ namespace IbanOop
 		
 		
 		private void Init() {
-			this.countryEntities = this.CountryEntityLoader();
+			this.countryEntities = MainController.CountryEntityLoader();
 		}
 		
 		private void Handle() {
@@ -82,12 +82,10 @@ namespace IbanOop
 				}
 			}
 		}
-		
-		
 		#endregion 
 		
 		#region privateworkers
-		private string[] LoadCsv(string filename,string path,int tries) {
+		private static string[] LoadCsv(string filename,string path,int tries) {
 			string[] data;
 			try {
 				data = System.IO.File.ReadAllLines(@path+filename);
@@ -97,15 +95,15 @@ namespace IbanOop
 					Utils.ThrowError("Cant Load " + filename);
        				System.Environment.Exit(1);
 				} else {
-					data = this.LoadCsv(filename, "../" + path,tries-1);
+					data = MainController.LoadCsv(filename, "../" + path,tries-1);
 				}
 			}
 			return data;
 		}
 		
-		private CountryEntity[] CountryEntityLoader() {
+		private static CountryEntity[] CountryEntityLoader() {
 			string[] countries;
-			countries = this.LoadCsv("countries.csv","Ressources/",2);
+			countries = MainController.LoadCsv("countries.csv","Ressources/",2);
 			
 			CountryEntity[] CountryEntities = new CountryEntity[countries.Length];
 			int c = 0;
