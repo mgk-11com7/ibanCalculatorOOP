@@ -8,7 +8,7 @@ using System;
 
 namespace IbanOop
 {
-	public interface MenuEntityInterface
+	public interface MenuInterface
 	{
 		MenuChoiceEntity[] GetMenuChoiceElements();
 	}
@@ -93,9 +93,9 @@ namespace IbanOop
         }
 		#endregion
 		
-		public MenuController(MenuEntityInterface MenuEntityInterface)
+		public MenuController(MenuInterface MenuInterface)
 		{
-			this._elements = MenuEntityInterface.GetMenuChoiceElements();
+			this._elements = MenuInterface.GetMenuChoiceElements();
 		}
 		
 		

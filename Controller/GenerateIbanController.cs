@@ -19,13 +19,13 @@ namespace IbanOop
 		#region constructors
 		public GenerateIbanController(CountryEntity[] countryEntities)
 		{
-			InputController InputController = new InputController();
+			GenerateIbanView GenerateIbanView = new GenerateIbanView();
 			
-			SelectCountryMenuEntity SelectCountryMenuEntity = new SelectCountryMenuEntity(countryEntities);
-			MenuController generateIbanMenu = new MenuController(SelectCountryMenuEntity);
+			SelectCountryMenu SelectCountryMenu = new SelectCountryMenu(countryEntities);
+			MenuController generateIbanMenu = new MenuController(SelectCountryMenu);
 			int pos = generateIbanMenu.handle();
 			
-			string bban = InputController.fetchBban(countryEntities[pos]);
+			string bban = GenerateIbanView.fetchBban(countryEntities[pos]);
 			string iban = this.GenerateIban(countryEntities[pos]._countryCode,bban);
 			Utils.PrintHeader();
 			Console.ForegroundColor = ConsoleColor.Green;

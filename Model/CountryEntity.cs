@@ -23,10 +23,12 @@ namespace IbanOop
 	    public CountryEntity(string countryName,int ibanLength,string ibanFormat,string bbanFormatCode) {
 	    	_countryName = countryName;
 	    	_ibanLength = ibanLength;
-    		_countryCode = ibanFormat.Substring(0, 2);
 	    	_ibanFormat = ibanFormat;
 		    _bbanFormatCode = bbanFormatCode;
-		    _bbanFormat = CountryEntity.BbanFormatLookUp(bbanFormatCode);
+	    	if (ibanLength!=0) {
+    			_countryCode = ibanFormat.Substring(0, 2);
+		    	_bbanFormat = CountryEntity.BbanFormatLookUp(bbanFormatCode);
+	    	}
 	    }
 	    
 		private static string BbanFormatLookUp(string bbanFormatCode) {

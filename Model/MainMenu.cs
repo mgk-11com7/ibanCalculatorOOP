@@ -6,7 +6,7 @@ using System;
 
 namespace IbanOop
 {
-	public class MainMenuEntity : MenuEntityInterface
+	public class MainMenu : MenuInterface
 	{
 		#region properties
 		public MenuChoiceEntity[] _elements;
@@ -20,7 +20,7 @@ namespace IbanOop
 		#endregion
 		
 		#region constructors
-			public MainMenuEntity(CountryEntity[] countryEntities)
+			public MainMenu(CountryEntity[] countryEntities)
 			{
 				this._countryEntities = countryEntities;
 				

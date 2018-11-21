@@ -29,9 +29,9 @@ namespace IbanOop
 		
 		public ValidateIbanController(CountryEntity[] countryEntities)
 		{
-			InputController InputController = new InputController();
+			ValidateIbanView ValidateIbanView = new ValidateIbanView();
 			
-			string iban = InputController.fetchIban(countryEntities);
+			string iban = ValidateIbanView.FetchIban(countryEntities);
 		}
 		#endregion
 		

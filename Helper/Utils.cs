@@ -67,6 +67,7 @@ namespace IbanOop
 			return textCode;
 		}
 		
+		
 		/* 
 		 *  Error Output and redirect to main menu
 		 * 

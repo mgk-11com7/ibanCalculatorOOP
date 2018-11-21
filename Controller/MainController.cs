@@ -46,9 +46,9 @@ namespace IbanOop
 		}
 		
 		private void Handle() {
-			MainMenuEntity MainMenuEntity = new MainMenuEntity(this.countryEntities);
+			MainMenu MainMenu = new MainMenu(this.countryEntities);
 			
-			MenuController mainMenu = new MenuController(MainMenuEntity);
+			MenuController mainMenu = new MenuController(MainMenu);
 			while(true) {	//Main Menu runs in endless loop until exit is chosen
 				mainMenu.handle();
 			}

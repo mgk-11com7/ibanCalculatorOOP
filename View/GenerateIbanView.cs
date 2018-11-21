@@ -1,12 +1,12 @@
 ﻿/*
  * Author: Stefan Sander
- * Date: 20.11.2018
+ * Date: 21.11.2018
  */
 using System;
 
 namespace IbanOop
 {
-	public class InputController
+	public class GenerateIbanView
 	{
 		#region properties
 		#endregion
@@ -15,9 +15,13 @@ namespace IbanOop
 		#endregion
 		
 		#region constructors
+			public GenerateIbanView()
+			{
+			}
 		#endregion
 		
 		#region workers
+		
 	   private IbanFormatKeyEntity GetFieldEntityByKey(IbanFormatKeyEntity[] IbanFormatKeyEntities,string key) {
 			IbanFormatKeyEntity IbanFormatKeyEntity = new IbanFormatKeyEntity(null,null);
 			foreach(IbanFormatKeyEntity e in IbanFormatKeyEntities) {
@@ -28,7 +32,7 @@ namespace IbanOop
 		}
 		
 		private void fetchBbanOutput(IbanFormatKeyEntity[] ibanFormatKeyEntities,bool success,string country,string fieldId,string iban,int pos) {
-			IbanFormatKeyEntity FieldEntity = GetFieldEntityByKey(ibanFormatKeyEntities,fieldId);
+			IbanFormatKeyEntity FieldEntity = this.GetFieldEntityByKey(ibanFormatKeyEntities,fieldId);
 			string field = FieldEntity._name;
 	     	Utils.PrintHeader();
 	        Console.WriteLine("Land: " + country);
@@ -83,7 +87,7 @@ namespace IbanOop
 	   		while (pos!=CountryEntity._ibanLength) {
 	   			bban = CountryEntity._ibanFormat.Substring(0,4) + input + CountryEntity._ibanFormat.Substring(4).Substring(input.Length);
 	   			this.fetchBbanOutput(IbanFormatKeyEntities,false,CountryEntity._countryName,CountryEntity._ibanFormat.Substring(pos,1),bban,pos);
-	   			IbanFormatKeyEntity FieldEntity = GetFieldEntityByKey(IbanFormatKeyEntities,CountryEntity._ibanFormat.Substring(pos,1));
+	   			IbanFormatKeyEntity FieldEntity = this.GetFieldEntityByKey(IbanFormatKeyEntities,CountryEntity._ibanFormat.Substring(pos,1));
 	   			bool isNumeric = int.TryParse(CountryEntity._ibanFormat.Substring(pos,1), out n);
 	   			if (isNumeric==true) {	// costa rica fix (costa rica bban always begins with a "0")
 			  			input = input + CountryEntity._ibanFormat.Substring(pos,1);
@@ -129,13 +133,6 @@ namespace IbanOop
 	   		}
 	   		return input+CountryEntity._ibanFormat.Substring(4).Substring(input.Length);
 	   }
-	   
-		
-	   public string fetchIban(CountryEntity[] CountryEntities)
-	   {
-			return "DE7212341232123412";
-	   }
-	   
 		#endregion
 	}
 }
