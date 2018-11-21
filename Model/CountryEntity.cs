@@ -20,7 +20,7 @@ namespace IbanOop
 	    public string _bbanFormatCode;
 	    public string _bbanFormat;
 	    
-	    public CountryEntity(string countryName,int ibanLength,string ibanFormat,string bbanFormatCode) {
+	    private void Init(string countryName,int ibanLength,string ibanFormat,string bbanFormatCode) {
 	    	_countryName = countryName;
 	    	_ibanLength = ibanLength;
 	    	_ibanFormat = ibanFormat;
@@ -29,6 +29,13 @@ namespace IbanOop
     			_countryCode = ibanFormat.Substring(0, 2);
 		    	_bbanFormat = CountryEntity.BbanFormatLookUp(bbanFormatCode);
 	    	}
+	    	
+	    }
+	    public CountryEntity() {
+	    	this.Init(null,0,null,null);
+	    }
+	    public CountryEntity(string countryName,int ibanLength,string ibanFormat,string bbanFormatCode) {
+	    	this.Init(countryName,ibanLength,ibanFormat,bbanFormatCode);
 	    }
 	    
 		private static string BbanFormatLookUp(string bbanFormatCode) {

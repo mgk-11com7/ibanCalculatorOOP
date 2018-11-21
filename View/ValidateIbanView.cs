@@ -58,7 +58,7 @@ namespace IbanOop
 		
 	   public string FetchIban(CountryEntity[] CountryEntities)
 	   {
-			CountryEntity CountryEntity = new CountryEntity("",0,"","");
+			CountryEntity CountryEntity = new CountryEntity();
 			ConsoleKeyInfo key;
 			string ibanFormat = "";
 			string input="";
@@ -75,7 +75,7 @@ namespace IbanOop
 					allowNumber=false;
 				}
 		    	if (pos==2) {
-		    		CountryEntity = ValidateIbanController.GetCountryEntityByCountryCode(CountryEntities,input);
+		    		CountryEntity = Utils.GetCountryEntityByCountryCode(CountryEntities,input);
 		    		ibanFormat =  CountryEntity._ibanFormat;
 		    	}
 		    	if (pos==2 || pos==3) {	//Verification Number

@@ -18,20 +18,15 @@ namespace IbanOop
 		
 
 		#region workers
-		public static CountryEntity GetCountryEntityByCountryCode(CountryEntity[] countryEntities,string countryCode) {
-			CountryEntity countryEntity = new CountryEntity("",0,"","");
-			foreach(CountryEntity e in countryEntities) {
-				if (e._countryCode==countryCode)
-					countryEntity=e;
-			}
-			return countryEntity;
-		}
 		
 		public ValidateIbanController(CountryEntity[] countryEntities)
 		{
 			ValidateIbanView ValidateIbanView = new ValidateIbanView();
-			
-			string iban = ValidateIbanView.FetchIban(countryEntities);
+			IbanEntity IbanEntity = new IbanEntity(ValidateIbanView.FetchIban(countryEntities));
+			IbanEntity GeneratedIbanEntity = GenerateIbanController.GenerateIban(IbanEntity.GetCountryCode(),IbanEntity.GetBban());
+			Console.WriteLine(IbanEntity.GetIban());
+			Console.WriteLine(GeneratedIbanEntity.GetIban());
+			Console.ReadLine();
 		}
 		#endregion
 		

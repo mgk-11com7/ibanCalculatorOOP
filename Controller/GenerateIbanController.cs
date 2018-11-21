@@ -22,16 +22,12 @@ namespace IbanOop
 			GenerateIbanView GenerateIbanView = new GenerateIbanView();
 			
 			SelectCountryMenu SelectCountryMenu = new SelectCountryMenu(countryEntities);
-			MenuController generateIbanMenu = new MenuController(SelectCountryMenu);
-			int pos = generateIbanMenu.handle();
-			
+			MenuController GenerateIbanMenu = new MenuController(SelectCountryMenu);
+			int pos = GenerateIbanMenu.handle();
 			string bban = GenerateIbanView.fetchBban(countryEntities[pos]);
-			string iban = this.GenerateIban(countryEntities[pos]._countryCode,bban);
-			Utils.PrintHeader();
-			Console.ForegroundColor = ConsoleColor.Green;
-			Console.Write(Utils.SpaceShifter(iban,4));
-			Console.ResetColor();
-			MainController.Wait(true);
+			IbanEntity IbanEntity = new IbanEntity(countryEntities[pos]._countryCode,bban);
+			//string iban = GenerateIbanController.GenerateIban(countryEntities[pos]._countryCode,GenerateIbanView.fetchBban(countryEntities[pos]));
+			GenerateIbanView.PrintResult(IbanEntity.GetIban());
 		}
 		#endregion
 		
@@ -43,7 +39,7 @@ namespace IbanOop
 		 * @param string strCountry (2 Characters)
 		 * @return string country code as numbers 
 		 */
-		private  string CountryCodeLookUp(string countryCode)
+		private static string CountryCodeLookUp(string countryCode)
 		{
 		    string strCountryCode = "";
 		    strCountryCode = Utils.MergeStringToNumbers(countryCode);
@@ -63,7 +59,7 @@ namespace IbanOop
 		 * @param int the modulo operation value
 		 * @return int the result of the calculaton
 		 */
-		private int Modulo(String num, int mod) 
+		private static int Modulo(String num, int mod) 
 		{ 
 		    int result = 0;
 		    for (int i = 0; i < num.Length; i++) {
@@ -78,10 +74,10 @@ namespace IbanOop
 		 * @param string the bban used as base for the calculation
 		 * @return string the verification number
 		 */
-		private string GenerateVerificationNumber(string strBasicBankAccountNumber)
+		private static string GenerateVerificationNumber(string strBasicBankAccountNumber)
 		{
 			string mergedBban = Utils.MergeStringToNumbers(strBasicBankAccountNumber);
-			decimal decVerificationNumber = 98 - this.Modulo(mergedBban,97);
+			decimal decVerificationNumber = 98 - GenerateIbanController.Modulo(mergedBban,97);
 		    string strVerificationNumber = decVerificationNumber.ToString();
 		    
 		    // merge verification number to 2 characters
@@ -92,12 +88,20 @@ namespace IbanOop
 		    return strVerificationNumber;
 		}
 		
-		private string GenerateIban(string countryCode,string bban)
+		public static IbanEntity GenerateIban(string countryCode,string bban)
 		{
-		    string strCountryCode = this.CountryCodeLookUp(countryCode);
-		    string strVerificationNumber = this.GenerateVerificationNumber(bban + strCountryCode);
+			string strCountryCode;
+			int n;
+			bool isNumeric = int.TryParse(countryCode, out n);
+			if (isNumeric==true) {
+				strCountryCode = countryCode;
+			} else {
+		    	strCountryCode = GenerateIbanController.CountryCodeLookUp(countryCode);
+			}
+		    string strVerificationNumber = GenerateIbanController.GenerateVerificationNumber(bban + strCountryCode);
 		    string strIbanNumber =  countryCode + strVerificationNumber + bban;
-		    return strIbanNumber;
+		    IbanEntity IbanEntity = new IbanEntity(strIbanNumber);
+		    return IbanEntity;
 		}
 		
 		#endregion

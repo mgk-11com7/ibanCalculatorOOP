@@ -21,6 +21,14 @@ namespace IbanOop
 		#endregion
 		
 		#region workers
+		public void PrintResult(string iban) {
+			
+			Utils.PrintHeader();
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.Write(Utils.SpaceShifter(iban,4));
+			Console.ResetColor();
+			MainController.Wait(true);
+		}
 		
 	   private IbanFormatKeyEntity GetFieldEntityByKey(IbanFormatKeyEntity[] IbanFormatKeyEntities,string key) {
 			IbanFormatKeyEntity IbanFormatKeyEntity = new IbanFormatKeyEntity(null,null);
