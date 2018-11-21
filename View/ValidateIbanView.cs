@@ -21,43 +21,40 @@ namespace IbanOop
 		#endregion
 		
 		#region workers
-		
-		
-	   
-	   public void FetchIbanOutput(bool success,string ibanFormatLine,string iban,bool showResult) {
-		  	Utils.PrintHeader();
-		  	if (ibanFormatLine.Length==0) {
-		  		Console.WriteLine("");
-		  	} else {
-		  		Console.WriteLine("IBAN Format: " + Utils.SpaceShifter(ibanFormatLine,4));
-		  	}
-		  	if (showResult==false) {
-		  		Console.Write("IBAN: " + Utils.SpaceShifter(iban,4));
-		  	} else  {
-		      	if (success==true) {
-		  			Console.Write("IBAN: ");
-		        	Console.ForegroundColor = ConsoleColor.Green;
-		  			Console.Write(Utils.SpaceShifter(iban,4));
-		   			Console.ResetColor();
-		      		Console.Write(" ist");
-		        	Console.ForegroundColor = ConsoleColor.Green;
-		      		Console.Write(" VALIDE");
-		      	} else {
-		  			Console.Write("IBAN: ");
-		        	Console.ForegroundColor = ConsoleColor.Red;
-		  			Console.Write(Utils.SpaceShifter(iban,4));
-		   			Console.ResetColor();
-		      		Console.Write(" ist");
-		        	Console.ForegroundColor = ConsoleColor.Red;
-		      		Console.Write(" NICHT VALIDE");
-		      	}
-		  	}
-		   	Console.ResetColor();
-		  	Console.WriteLine("");
-}
-		
-	   public string FetchIban(CountryEntity[] CountryEntities)
-	   {
+		   public void ValidateIbanOutput(bool success,string ibanFormatLine,string iban,bool showResult) {
+			  	Utils.PrintHeader();
+			  	if (ibanFormatLine.Length==0) {
+			  		Console.WriteLine("");
+			  	} else {
+			  		Console.WriteLine("IBAN Format: " + Utils.SpaceShifter(ibanFormatLine,4));
+			  	}
+			  	if (showResult==false) {
+			  		Console.Write("IBAN: " + Utils.SpaceShifter(iban,4));
+			  	} else  {
+			      	if (success==true) {
+			  			Console.Write("IBAN: ");
+			        	Console.ForegroundColor = ConsoleColor.Green;
+			  			Console.Write(Utils.SpaceShifter(iban,4));
+			   			Console.ResetColor();
+			      		Console.Write(" ist");
+			        	Console.ForegroundColor = ConsoleColor.Green;
+			      		Console.Write(" VALIDE");
+			      	} else {
+			  			Console.Write("IBAN: ");
+			        	Console.ForegroundColor = ConsoleColor.Red;
+			  			Console.Write(Utils.SpaceShifter(iban,4));
+			   			Console.ResetColor();
+			      		Console.Write(" ist");
+			        	Console.ForegroundColor = ConsoleColor.Red;
+			      		Console.Write(" NICHT VALIDE");
+			      	}
+			  	}
+			   	Console.ResetColor();
+			  	Console.WriteLine("");
+			}
+			
+		   public string ValidateIbanInput(CountryEntity[] CountryEntities)
+		   {
 			CountryEntity CountryEntity = new CountryEntity();
 			ConsoleKeyInfo key;
 			string ibanFormat = "";
@@ -68,7 +65,6 @@ namespace IbanOop
 			bool allowLetter=true;
 			bool allowNumber=false;
 			bool isNumeric = false;
-			
 			while (ibanFormat.Length==0 || pos!=ibanFormat.Length) {
 		    	if (pos<2) {	//CountryCode Input
 					allowLetter=true;
@@ -76,7 +72,10 @@ namespace IbanOop
 				}
 		    	if (pos==2) {
 		    		CountryEntity = ValidateIbanController.GetCountryEntityByCountryCode(CountryEntities,input);
-		    		ibanFormat =  CountryEntity._ibanFormat;
+		    		if (CountryEntity._countryName!=null) {
+		    			ibanFormat =  CountryEntity._ibanFormat;
+		    			stop = true;
+		    		} 
 		    	}
 		    	if (pos==2 || pos==3) {	//Verification Number
 					allowLetter=false;
@@ -96,7 +95,7 @@ namespace IbanOop
 		  			input = input + CountryEntity._ibanFormat.Substring(pos,1);
 		      	   	pos++;
 				} else {
-					this.FetchIbanOutput(false,ibanFormat,input,false);
+					this.ValidateIbanOutput(false,ibanFormat,input,false);
 			        key = Console.ReadKey(true);
 			        cki = key.KeyChar;
 			        if (key.Key.ToString()=="Backspace" && pos>0) {
@@ -110,19 +109,18 @@ namespace IbanOop
 				        		&&	!(cki >= 97 && cki <= 122)
 				        	)
 				        	||	(allowNumber==false) && (cki >= 48 && cki <= 57)
-				        	||	(allowLetter==false) && ((cki >= 65 && cki <= 90) || (cki >= 97 && cki <= 122))
-				        ) {	
-				        	
+				        	||	(allowLetter==false) && ((cki >= 65 && cki <= 90) || (cki >= 97 && cki <= 122)
+                           )
+			          	) {	
 				  			input = input + cki.ToString().ToUpper();
 				      	   	pos++;
 				        } 
 			        }
 				}
-		}
-		this.FetchIbanOutput(false,ibanFormat,input,false);
-		return input;
-	   }
-	   
+			}
+			this.ValidateIbanOutput(false,ibanFormat,input,false);
+			return input;
+		   }
 		#endregion
 	}
 }

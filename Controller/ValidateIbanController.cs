@@ -31,19 +31,13 @@ namespace IbanOop
 		public ValidateIbanController(CountryEntity[] countryEntities)
 		{
 			ValidateIbanView ValidateIbanView = new ValidateIbanView();
-			IbanEntity IbanEntity = new IbanEntity(ValidateIbanView.FetchIban(countryEntities));
+			IbanEntity IbanEntity = new IbanEntity(ValidateIbanView.ValidateIbanInput(countryEntities));
 			string countryCode = IbanEntity.GetCountryCode();
-			IbanEntity GeneratedIbanEntity = GenerateIbanController.GenerateIban(countryCode,IbanEntity.GetBban());
+		//	IbanEntity GeneratedIbanEntity = GenerateIbanController.GenerateIban(countryCode,IbanEntity.GetBban());
 			
 		    CountryEntity CountryEntity = ValidateIbanController.GetCountryEntityByCountryCode(countryEntities,countryCode);
 		    
-			bool success;
-			if (GeneratedIbanEntity.GetIban()==IbanEntity.GetIban()) {
-				success = true;
-			} else {
-				success = false;
-			}
-		    ValidateIbanView.FetchIbanOutput(success,CountryEntity._ibanFormat,IbanEntity.GetIban(),true);
+		    ValidateIbanView.ValidateIbanOutput(IbanEntity.Validate(),CountryEntity._ibanFormat,IbanEntity.GetIban(),true);
 			MainController.Wait(true);
 		}
 		#endregion

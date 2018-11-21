@@ -11,7 +11,7 @@ namespace IbanOop
 		#region properties
 		private int _page = 1;
 		private int _pos = 0;
-		private  int _maxElementsPerPage = 3;
+		private int _maxElementsPerPage = 3;
 		private string _elementSelected = "[X] ";
 		private string _elementNotSelected = "[ ] ";
 		public MenuChoiceEntity[] _elements;

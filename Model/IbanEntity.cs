@@ -34,7 +34,7 @@ namespace IbanOop
 			return GenerateIbanController.GenerateIban(this._countryCode,this._bban).GetIban();
 		}
 		
-		private bool Validate() {
+		public bool Validate() {
 			if (GenerateIbanController.GenerateIban(this._countryCode,this._bban).GetIban()==this.GetIban()) {
 				return true;
 			} else {
