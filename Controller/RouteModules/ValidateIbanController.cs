@@ -22,7 +22,6 @@ namespace IbanOop
 			this._countryEntityController = CountryEntityController;
 		}
 		#region workers
-		
 		public void Handle()
 		{
 			

@@ -18,7 +18,6 @@ namespace IbanOop
 			return this._caption;
 		}
 		#endregion
-		
 		public void Init(CountryEntityController CountryEntityController) {
 			this._countryEntityController = CountryEntityController;
 		}
