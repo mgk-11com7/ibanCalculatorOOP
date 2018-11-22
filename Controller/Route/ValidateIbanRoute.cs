@@ -6,7 +6,7 @@ using System;
 
 namespace IbanOop
 {
-	public class ValidateIbanController : RouteInterface
+	public class ValidateIbanRoute : RouteInterface
 	{
 		#region properties
 		private string _caption = "IBAN validieren";
@@ -25,15 +25,13 @@ namespace IbanOop
 		
 		public void Handle()
 		{
-			
 			CountryEntityController CountryEntityController = this._countryEntityController;
-			ValidateIbanIOHandler ValidateIbanIOHandler = new ValidateIbanIOHandler();
-			IbanEntity IbanEntity = new IbanEntity(ValidateIbanIOHandler.ValidateIbanInput(CountryEntityController),CountryEntityController);
+			ValidateIbanIOHandler ValidateIbanIOHandler = new ValidateIbanIOHandler(CountryEntityController);
+			IbanEntity IbanEntity = ValidateIbanIOHandler.ValidateIbanInput();
 			CountryEntity CountryEntity = IbanEntity.GetCountryEntity();
 		    ValidateIbanIOHandler.ValidateIbanOutput(IbanEntity.Validate(),CountryEntity._ibanFormat,IbanEntity.GetIban(),true);
-			OutputUtilities.Wait(true);
+			InputOutputUtilities.Wait(true);
 		}
 		#endregion
-		
 	}
 }

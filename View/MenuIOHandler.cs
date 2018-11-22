@@ -18,8 +18,16 @@ namespace IbanOop
 			public MenuIOHandler()
 			{
 			}
-			
-		public static MenuResponse input(MenuChoice[] elements,int maxElementsPerPage,int page,int pos,string elementSelectedPrefix,string elementNotSelectedPrefix) {
+		#endregion
+		
+		#region workers
+		public static bool input(MenuInterface menu) {
+			MenuChoice[] elements = menu.GetMenuChoiceElements();
+			int maxElementsPerPage = menu.GetMaxElementsPerPage();
+			int page = menu.GetPage();
+			int pos = menu.GetPosition();
+			string elementSelectedPrefix = menu.GetElementSelectedPrefix();
+			string elementNotSelectedPrefix = menu.GetElementNotSelectedPrefix();
 		    ConsoleKeyInfo cki;
 		    cki = Console.ReadKey(true);
 		    if ((cki.Key.ToString() == "DownArrow") || (cki.Key.ToString() == "RightArrow"))
@@ -40,7 +48,9 @@ namespace IbanOop
 		    }
 		    else if (cki.Key.ToString() == "Enter")
 		    {
-		    	return new MenuResponse(page,pos,true);
+	    		menu.SetPosition(pos);
+				menu.SetPage(page);
+		    	return true;
 		    }
 		    while (pos+1 >maxElementsPerPage*page) {
 		    	page++;
@@ -48,10 +58,19 @@ namespace IbanOop
 			while (pos+1 < maxElementsPerPage*page-maxElementsPerPage+1) {
 		    	page--;
 			}
-	    	return new MenuResponse(page,pos,false);
+		    
+			menu.SetPosition(pos);
+			menu.SetPage(page);
+	    	return false;
 		}
 			
-		public static void output(MenuChoice[] elements,int maxElementsPerPage,int page,int pos,string elementSelectedPrefix,string elementNotSelectedPrefix) {
+		public static void output(MenuInterface menu) {
+			MenuChoice[] elements = menu.GetMenuChoiceElements();
+			int maxElementsPerPage = menu.GetMaxElementsPerPage();
+			int page = menu.GetPage();
+			int pos = menu.GetPosition();
+			string elementSelectedPrefix = menu.GetElementSelectedPrefix();
+			string elementNotSelectedPrefix = menu.GetElementNotSelectedPrefix();
 			float floatMaxPages = (float) elements.Length/(float) maxElementsPerPage;
 			OutputUtilities.PrintHeader();
 		    Console.WriteLine("Nutzen Sie die Pfeiltasten zum Navigieren und Enter zum Auswählen\n");

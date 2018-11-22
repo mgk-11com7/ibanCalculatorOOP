@@ -24,7 +24,7 @@ namespace IbanOop
 		public string GetBban() {
 			return this._bban;
 		}
-		public string GetIban() {
+		public string GetIban() { 
 			return this._iban;
 		}
 		public CountryEntity GetCountryEntity() {

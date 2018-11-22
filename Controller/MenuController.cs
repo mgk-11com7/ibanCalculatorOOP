@@ -25,16 +25,18 @@ namespace IbanOop
 		public int handle() {
 			bool selected=false;
 			while(selected==false) {
-				MenuIOHandler.output(this._Menu.GetMenuChoiceElements(),this._Menu.GetMaxElementsPerPage(),this._Menu.GetPage(),this._Menu.GetPosition(),this._Menu.GetElementSelectedPrefix(),this._Menu.GetElementNotSelectedPrefix());
-				MenuResponse response =	MenuIOHandler.input(this._Menu.GetMenuChoiceElements(),this._Menu.GetMaxElementsPerPage(),this._Menu.GetPage(),this._Menu.GetPosition(),this._Menu.GetElementSelectedPrefix(),this._Menu.GetElementNotSelectedPrefix());
-				this._Menu.SetPosition(response.GetPos());
-				this._Menu.SetPage(response.GetPage());
-				selected = response.GetSelected();
+				MenuIOHandler.output(this._Menu);
+				selected =	MenuIOHandler.input(this._Menu);
 			}
 			if (this._Menu.GetMenuChoiceElements()[this._Menu.GetPosition()]._callback!=null) {
 				this._Menu.GetMenuChoiceElements()[this._Menu.GetPosition()]._callback();
 			}
 			return this._Menu.GetPosition();
+		}
+		public void run() {
+			while(true) {	//Main Menu runs in endless loop until exit is chosen
+				this.handle();
+			}
 		}
 	}
 }
