@@ -6,14 +6,11 @@ using System;
 
 namespace IbanOop
 {
-	public class SelectCountryMenu : MenuInterface
+	public class SelectCountryMenu : MenuStyleTwo,MenuInterface
 	{
 		#region properties
 		private int _page = 1;
 		private int _pos = 0;
-		private int _maxElementsPerPage = 10;
-		private string _elementSelected = "[X] ";
-		private string _elementNotSelected = "[ ] ";
 		#endregion
 		
 		#region accessors
@@ -22,7 +19,7 @@ namespace IbanOop
 		#region constructors
 
 		#region properties
-		public MenuChoiceEntity[] _elements;
+		public MenuChoice[] _elements;
 		public CountryEntity[] _countryEntities;
 		#endregion
 		
@@ -39,17 +36,7 @@ namespace IbanOop
 		public int GetPosition() {
 			return this._pos;
 		}
-		public int GetMaxElementsPerPage() {
-			return this._maxElementsPerPage;
-		}
-		public string GetElementSelectedPrefix() {
-			return this._elementSelected;
-		}
-		public string GetElementNotSelectedPrefix() {
-			return this._elementNotSelected;
-			
-		}
-		public MenuChoiceEntity[] GetMenuChoiceElements () {
+		public MenuChoice[] GetMenuChoiceElements () {
 			return this._elements;
 		}
 		#endregion
@@ -58,10 +45,10 @@ namespace IbanOop
 			public SelectCountryMenu(CountryEntity[] countryEntities)
 			{
 				this._countryEntities = countryEntities;
-				MenuChoiceEntity[] menuElements= new MenuChoiceEntity[countryEntities.Length];
+				MenuChoice[] menuElements= new MenuChoice[countryEntities.Length];
 				for(int i = 0; i < countryEntities.Length; i++)
 				{
-					menuElements[i] =  new MenuChoiceEntity(countryEntities[i]._countryName);
+					menuElements[i] =  new MenuChoice(countryEntities[i]._countryName);
 				}
 				this._elements = menuElements;
 			}

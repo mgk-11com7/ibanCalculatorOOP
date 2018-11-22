@@ -9,12 +9,22 @@ namespace IbanOop
 	public class MenuResponse
 	{
 		#region properties
-		public int _page;
-		public int _pos;
-		public bool _selected;
+			private int _page;
+			private int _pos;
+			private bool _selected;
 		#endregion
 		
 		#region accessors
+		public int GetPage() {
+			return this._page;
+		}
+		public int GetPos() {
+			return this._pos;
+			
+		}
+		public bool GetSelected() {
+			return this._selected;
+		}
 		#endregion
 		
 		#region constructors

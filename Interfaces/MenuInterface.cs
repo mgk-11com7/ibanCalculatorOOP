@@ -9,7 +9,7 @@ namespace IbanOop
 {
 	public interface MenuInterface
 	{
-		MenuChoiceEntity[] GetMenuChoiceElements();
+		MenuChoice[] GetMenuChoiceElements();
 		string GetElementSelectedPrefix();
 		string GetElementNotSelectedPrefix();
 		int GetMaxElementsPerPage();

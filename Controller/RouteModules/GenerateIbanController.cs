@@ -1,33 +1,40 @@
 ﻿/*
  * Author: Stefan Sander
- * Date: 01.11.2018
- * Time: 03:53
- * 
+ * Since: 01.11.2018
  */
 using System;
 
 namespace IbanOop
 {
-	public class GenerateIbanController
+	public class GenerateIbanController : RouteInterface
 	{
 		#region properties
+		private string _caption = "IBAN generieren";
+		private CountryEntityController _countryEntityController;
 		#endregion
 		
 		#region accessors
+		public string GetCaption() {
+			return this._caption;
+		}
 		#endregion
 		
+		public void Init(CountryEntityController CountryEntityController) {
+			this._countryEntityController = CountryEntityController;
+		}
 		#region constructors
-			public GenerateIbanController(CountryEntity[] countryEntities)
+			public void Handle()
 			{
-				GenerateIbanView GenerateIbanView = new GenerateIbanView();
+				CountryEntityController CountryEntityController = this._countryEntityController;
+				GenerateIbanIOHandler GenerateIbanIOHandler = new GenerateIbanIOHandler();
 				
+				CountryEntity[] countryEntities = CountryEntityController._countryEntities;
 				SelectCountryMenu SelectCountryMenu = new SelectCountryMenu(countryEntities);
 				MenuController GenerateIbanMenu = new MenuController(SelectCountryMenu);
 				int pos = GenerateIbanMenu.handle();
-				string bban = GenerateIbanView.fetchBban(countryEntities[pos]);
-				IbanEntity IbanEntity = new IbanEntity(countryEntities[pos]._countryCode,bban);
-				//string iban = GenerateIbanController.GenerateIban(countryEntities[pos]._countryCode,GenerateIbanView.fetchBban(countryEntities[pos]));
-				GenerateIbanView.PrintResult(IbanEntity.GetIban());
+				string bban = GenerateIbanIOHandler.fetchBban(countryEntities[pos]);
+				IbanEntity IbanEntity = new IbanEntity(countryEntities[pos],bban);
+				GenerateIbanIOHandler.PrintResult(IbanEntity.GetIban());
 			}
 		#endregion
 		
@@ -63,10 +70,9 @@ namespace IbanOop
 			 * @param string strCountry (2 Characters)
 			 * @return string country code as numbers 
 			 */
-			private static string CountryCodeLookUp(string countryCode)
+			private static string CountryCodeLookUp(string countryAbbreviation)
 			{
-			    string strCountryCode = "";
-			    strCountryCode = GenerateIbanController.MergeStringToNumbers(countryCode);
+			    string strCountryCode = GenerateIbanController.MergeStringToNumbers(countryAbbreviation);
 			    // merge country code to 6 characters
 			    while (strCountryCode.Length < 6)
 			    {
@@ -112,19 +118,18 @@ namespace IbanOop
 			    return strVerificationNumber;
 			}
 			
-			public static IbanEntity GenerateIban(string countryCode,string bban)
+			public static IbanEntity GenerateIban(CountryEntity CountryEntity,string bban)
 			{
 				string strCountryCode;
 				int n;
-				bool isNumeric = int.TryParse(countryCode, out n);
-				if (isNumeric==true) {
-					strCountryCode = countryCode;
+				if (int.TryParse(CountryEntity._countryAbbreviation, out n)==true) {
+					strCountryCode = CountryEntity._countryAbbreviation;
 				} else {
-			    	strCountryCode = GenerateIbanController.CountryCodeLookUp(countryCode);
+			    	strCountryCode = GenerateIbanController.CountryCodeLookUp(CountryEntity._countryAbbreviation);
 				}
 			    string strVerificationNumber = GenerateIbanController.GenerateVerificationNumber(bban + strCountryCode);
-			    string strIbanNumber =  countryCode + strVerificationNumber + bban;
-			    IbanEntity IbanEntity = new IbanEntity(strIbanNumber);
+			    string strIbanNumber =  CountryEntity._countryAbbreviation + strVerificationNumber + bban;
+			    IbanEntity IbanEntity = new IbanEntity(strIbanNumber,CountryEntity);
 			    return IbanEntity;
 			}
 		

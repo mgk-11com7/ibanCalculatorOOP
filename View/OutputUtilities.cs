@@ -6,7 +6,7 @@ using System;
 
 namespace IbanOop
 {
-	public static class Utils
+	public class OutputUtilities
 	{
 		#region properties
 	    private static string[] _header = {
@@ -28,6 +28,31 @@ namespace IbanOop
 		
 		#region workers
 		
+		/*
+		 *  Waits for User interaction
+		 *	note: method overloading.
+		 * 
+		 *  @param bool (optional)	require Enter to continue or not
+		 * 	@return void
+		 */
+		
+		public static void Wait() { Wait(false); }
+		public static void Wait(bool requireEnter) {
+			if (requireEnter==false) {
+			    Console.WriteLine("");
+			    Console.WriteLine("Drücken Sie eine beliebige Taste zum fortfahren...");
+			    Console.ReadKey(true);
+			} else {
+				ConsoleKeyInfo cki;
+		        Console.WriteLine("");
+		        Console.WriteLine("Drücken Sie die ENTER-Taste zum fortfahren...");
+				cki = Console.ReadKey(true);
+				while(cki.Key.ToString()!="Enter") {
+					cki = Console.ReadKey(true);
+				}
+			}
+		}
+		
 		/* 
 		 *  clears the console and prints a useless ascii-art header
 		 *  
@@ -37,7 +62,7 @@ namespace IbanOop
 		{
 		    Console.Clear();
 		    Console.ForegroundColor = ConsoleColor.DarkRed;
-		    foreach (string line in Utils._header)
+		    foreach (string line in OutputUtilities._header)
 		    {
 		        System.Console.Write(line + "\n");
 		    }
@@ -51,14 +76,21 @@ namespace IbanOop
 		 *	@return void
 		 */
 		public static void ThrowError(string errorMsg) {
-			Utils.PrintHeader();
+			ThrowError(errorMsg,"");
+		}
+		public static void ThrowError(string errorMsg,Exception exception) {
+			ThrowError(errorMsg,exception.Message);
+		}
+		public static void ThrowError(string errorMsg,string exceptionMsg) {
+			OutputUtilities.PrintHeader();
 			Console.ForegroundColor = ConsoleColor.Red;
 			Console.WriteLine("");
 			Console.Write("Fehler: ");
 			Console.ResetColor();
-			Console.Write(errorMsg);
+			Console.WriteLine(errorMsg);
 			Console.WriteLine("");
-			MainController.Wait();
+			Console.WriteLine(exceptionMsg);
+			OutputUtilities.Wait();
 		}
 		
 		/*

@@ -1,8 +1,6 @@
 ﻿/*
  * Author: Stefan Sander
- * Date: 01.11.2018
- * Time: 02:18
- * 
+ * Since: 01.11.2018
  */
 using System;
 

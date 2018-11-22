@@ -6,7 +6,7 @@ using System;
 
 namespace IbanOop
 {
-	public class MenuView
+	public class MenuIOHandler
 	{
 		#region properties
 		#endregion
@@ -15,11 +15,11 @@ namespace IbanOop
 		#endregion
 		
 		#region constructors
-			public MenuView()
+			public MenuIOHandler()
 			{
 			}
 			
-		public static MenuResponse input(MenuChoiceEntity[] elements,int maxElementsPerPage,int page,int pos,string elementSelectedPrefix,string elementNotSelectedPrefix) {
+		public static MenuResponse input(MenuChoice[] elements,int maxElementsPerPage,int page,int pos,string elementSelectedPrefix,string elementNotSelectedPrefix) {
 		    ConsoleKeyInfo cki;
 		    cki = Console.ReadKey(true);
 		    if ((cki.Key.ToString() == "DownArrow") || (cki.Key.ToString() == "RightArrow"))
@@ -51,9 +51,10 @@ namespace IbanOop
 	    	return new MenuResponse(page,pos,false);
 		}
 			
-			public static void output(MenuChoiceEntity[] elements,int maxElementsPerPage,int page,int pos,string elementSelectedPrefix,string elementNotSelectedPrefix) {
+		public static void output(MenuChoice[] elements,int maxElementsPerPage,int page,int pos,string elementSelectedPrefix,string elementNotSelectedPrefix) {
 			float floatMaxPages = (float) elements.Length/(float) maxElementsPerPage;
-			Utils.PrintHeader();
+			OutputUtilities.PrintHeader();
+		    Console.WriteLine("Nutzen Sie die Pfeiltasten zum Navigieren und Enter zum Auswählen\n");
 			for(int i=0;i<elements.Length;i++) {
 		    	if (maxElementsPerPage*page>i && i+1>maxElementsPerPage*(page-1))  {
 					
@@ -66,7 +67,7 @@ namespace IbanOop
 				}
 			}
 		    if (Math.Ceiling(floatMaxPages)>1) {
-		   	 	Console.WriteLine("Seite " + page.ToString() + " von " + Math.Ceiling(floatMaxPages));
+		   	 	Console.WriteLine("\nSeite " + page.ToString() + " von " + Math.Ceiling(floatMaxPages));
 		    }
 		}
 		#endregion

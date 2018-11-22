@@ -6,7 +6,7 @@ using System;
 
 namespace IbanOop
 {
-	public class GenerateIbanView
+	public class GenerateIbanIOHandler
 	{
 		#region properties
 		#endregion
@@ -20,11 +20,11 @@ namespace IbanOop
 		#region workers
 		public void PrintResult(string iban) {
 			
-			Utils.PrintHeader();
+			OutputUtilities.PrintHeader();
 			Console.ForegroundColor = ConsoleColor.Green;
-			Console.Write(Utils.SpaceShifter(iban,4));
+			Console.Write(OutputUtilities.SpaceShifter(iban,4));
 			Console.ResetColor();
-			MainController.Wait(true);
+			OutputUtilities.Wait(true);
 		}
 		
 	   private IbanFormatKeyEntity GetFieldEntityByKey(IbanFormatKeyEntity[] IbanFormatKeyEntities,string key) {
@@ -39,7 +39,7 @@ namespace IbanOop
 		private void fetchBbanOutput(IbanFormatKeyEntity[] ibanFormatKeyEntities,bool success,string country,string fieldId,string iban,int pos) {
 			IbanFormatKeyEntity FieldEntity = this.GetFieldEntityByKey(ibanFormatKeyEntities,fieldId);
 			string field = FieldEntity._name;
-	     	Utils.PrintHeader();
+	     	OutputUtilities.PrintHeader();
 	        Console.WriteLine("Land: " + country);
 	        if (field!="" && success!=true) {
 	       	 	Console.WriteLine("Bitte "+ field +" eingeben");
@@ -50,13 +50,13 @@ namespace IbanOop
 	       	Console.Write("IBAN: ");
 	        if (success==true) {
 				Console.ForegroundColor = ConsoleColor.Green;
-				Console.Write(Utils.SpaceShifter(iban,4));
+				Console.Write(OutputUtilities.SpaceShifter(iban,4));
 				Console.ResetColor();
 				Console.WriteLine();
 	        } else {
 	       		int spacesToAdd = iban.Length/4;
 	       		int posSpaces = pos/4;
-	       		iban = Utils.SpaceShifter(iban,4);
+	       		iban = OutputUtilities.SpaceShifter(iban,4);
 	        	Console.Write(iban.Substring(0,pos+posSpaces));
 	        	Console.ForegroundColor = ConsoleColor.Red;
 	            Console.Write(iban.Substring(pos+posSpaces,1));
@@ -87,7 +87,7 @@ namespace IbanOop
 	   		string input = "";
 	   		int pos = 4;	//pos 0-3 reservered; 0-1: country code; 2-3: verification number
 	   		
-	   		Utils.PrintHeader();
+	   		OutputUtilities.PrintHeader();
 	   		
 	   		while (pos!=CountryEntity._ibanLength) {
 	   			bban = CountryEntity._ibanFormat.Substring(0,4) + input + CountryEntity._ibanFormat.Substring(4).Substring(input.Length);

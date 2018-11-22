@@ -10,7 +10,7 @@ namespace IbanOop
 	{
 		#region properties
 		private string _iban;
-		private string _countryCode;
+		private CountryEntity _countryEntity;
 		private string _bban;
 		#endregion
 		
@@ -18,8 +18,8 @@ namespace IbanOop
 		public override string ToString() {
 			return this.GetIban();
 		}
-		public string GetCountryCode() {
-			return this._countryCode;
+		public string GetCountryAbbreviation() {
+			return this._countryEntity._countryAbbreviation;
 		}
 		public string GetBban() {
 			return this._bban;
@@ -27,29 +27,38 @@ namespace IbanOop
 		public string GetIban() {
 			return this._iban;
 		}
+		public CountryEntity GetCountryEntity() {
+			return this._countryEntity;
+		}
 		#endregion
 		
 		#region constructors
 		private string Generate() {
-			return GenerateIbanController.GenerateIban(this._countryCode,this._bban).GetIban();
+			return GenerateIbanController.GenerateIban(this._countryEntity,this._bban).GetIban();
 		}
 		
 		public bool Validate() {
-			if (GenerateIbanController.GenerateIban(this._countryCode,this._bban).GetIban()==this.GetIban()) {
+			if (GenerateIbanController.GenerateIban(this._countryEntity,this._bban).GetIban()==this.GetIban()) {
 				return true;
 			} else {
 				return false;
 			}
 		}
-		public IbanEntity(string countryCode,string bban)
+		public IbanEntity(CountryEntity CountryEntity,string bban)
 		{
-			this._countryCode = countryCode;
+			this._countryEntity = CountryEntity;
 			this._bban = bban;
 			this._iban = this.Generate();
 		}
-		public IbanEntity(string iban)
+		public IbanEntity(string iban,CountryEntity CountryEntity)
 		{
-			this._countryCode = iban.Substring(0,2);
+			this._countryEntity =CountryEntity;
+			this._bban = iban.Substring(4);
+			this._iban = iban;
+		}
+		public IbanEntity(string iban,CountryEntityController CountryEntityController)
+		{
+			this._countryEntity = CountryEntityController.GetCountryEntityByCountryAbbreviation(iban.Substring(0,2));
 			this._bban = iban.Substring(4);
 			this._iban = iban;
 		}

@@ -1,8 +1,6 @@
 ﻿/*
  * Author: Stefan Sander
- * Date: 01.11.2018
- * Time: 15:51
- * 
+ * Since: 01.11.2018
  */
 
 
@@ -15,10 +13,11 @@ namespace IbanOop
 		
 	    public string _countryName;
 	    public int _ibanLength;
-	    public string _countryCode;
+	    public string _countryAbbreviation;
 	    public string _ibanFormat;
 	    public string _bbanFormatCode;
 	    public string _bbanFormat;
+	    public string _countryCode;
 	    
 	    private void Init(string countryName,int ibanLength,string ibanFormat,string bbanFormatCode) {
 	    	_countryName = countryName;
@@ -26,7 +25,7 @@ namespace IbanOop
 	    	_ibanFormat = ibanFormat;
 		    _bbanFormatCode = bbanFormatCode;
 	    	if (ibanLength!=0) {
-    			_countryCode = ibanFormat.Substring(0, 2);
+    			_countryAbbreviation = ibanFormat.Substring(0, 2);
 		    	_bbanFormat = CountryEntity.BbanFormatLookUp(bbanFormatCode);
 	    	}
 	    	
@@ -38,6 +37,7 @@ namespace IbanOop
 	    	this.Init(countryName,ibanLength,ibanFormat,bbanFormatCode);
 	    }
 	    
+			
 		private static string BbanFormatLookUp(string bbanFormatCode) {
 			string i;
 			int iSum;
