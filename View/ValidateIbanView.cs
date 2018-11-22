@@ -74,7 +74,6 @@ namespace IbanOop
 		    		CountryEntity = ValidateIbanController.GetCountryEntityByCountryCode(CountryEntities,input);
 		    		if (CountryEntity._countryName!=null) {
 		    			ibanFormat =  CountryEntity._ibanFormat;
-		    			stop = true;
 		    		} 
 		    	}
 		    	if (pos==2 || pos==3) {	//Verification Number

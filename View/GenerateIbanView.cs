@@ -15,9 +15,6 @@ namespace IbanOop
 		#endregion
 		
 		#region constructors
-			public GenerateIbanView()
-			{
-			}
 		#endregion
 		
 		#region workers

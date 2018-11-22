@@ -11,14 +11,14 @@ namespace IbanOop
 	public class MenuChoiceEntity 
 	{
 		public string _caption;	// element caption to be displayed in the menu
-		public MenuChoiceCallback _callback;	// holds a callback function delegate to be called when selected, if null menu returns element id
+		public MenuController.MenuChoiceCallback _callback;	// holds a callback function delegate to be called when selected, if null menu returns element id
 		
 		public MenuChoiceEntity(string caption) {
 			_caption = caption;
 			_callback = null;
 		}		
 		
-		public MenuChoiceEntity(string caption,MenuChoiceCallback callback) {
+		public MenuChoiceEntity(string caption,MenuController.MenuChoiceCallback callback) {
 			_caption = caption;
 			_callback = callback;
 		}
