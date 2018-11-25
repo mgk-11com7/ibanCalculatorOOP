@@ -7,7 +7,7 @@ using System;
 
 namespace IbanOop
 {
-	public interface RouteInterface
+	public interface RouteControllerInterface
 	{
 		string GetCaption(); // string to be displayed in the menu
 		void Handle(); // holds the MenuChoice callback

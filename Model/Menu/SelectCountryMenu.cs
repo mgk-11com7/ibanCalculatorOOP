@@ -45,11 +45,12 @@ namespace IbanOop
 			public SelectCountryMenu(CountryEntity[] countryEntities)
 			{
 				this._countryEntities = countryEntities;
-				MenuChoice[] menuElements= new MenuChoice[countryEntities.Length];
+				MenuChoice[] menuElements= new MenuChoice[countryEntities.Length+1];
 				for(int i = 0; i < countryEntities.Length; i++)
 				{
 					menuElements[i] =  new MenuChoice(countryEntities[i]._countryName);
 				}
+				menuElements[countryEntities.Length] =  new MenuChoice("Zurück ins Hauptmenü");
 				this._elements = menuElements;
 			}
 		#endregion

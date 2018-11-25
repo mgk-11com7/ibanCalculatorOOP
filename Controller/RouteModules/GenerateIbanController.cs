@@ -6,7 +6,7 @@ using System;
 
 namespace IbanOop
 {
-	public class GenerateIbanController : RouteInterface
+	public class GenerateIbanController : RouteControllerInterface
 	{
 		#region properties
 		private string _caption = "IBAN generieren";
@@ -31,9 +31,14 @@ namespace IbanOop
 				SelectCountryMenu SelectCountryMenu = new SelectCountryMenu(countryEntities);
 				MenuController GenerateIbanMenu = new MenuController(SelectCountryMenu);
 				int pos = GenerateIbanMenu.handle();
-				string bban = GenerateIbanIOHandler.fetchBban(countryEntities[pos]);
-				IbanEntity IbanEntity = new IbanEntity(countryEntities[pos],bban);
-				GenerateIbanIOHandler.PrintResult(IbanEntity.GetIban());
+				if (pos<countryEntities.Length) {
+					string bban = GenerateIbanIOHandler.fetchBban(countryEntities[pos]);
+					IbanEntity IbanEntity = new IbanEntity(countryEntities[pos],bban);
+					GenerateIbanIOHandler.PrintResult(IbanEntity.GetIban());
+				} else {
+					//Back to main menu
+				}
+				//Back to main menu
 			}
 		#endregion
 		

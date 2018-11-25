@@ -13,7 +13,7 @@ namespace IbanOop
 		private int _pos = 0;
 		public MenuChoice[] _elements;
 		public CountryEntityController _countryEntityController;
-		private RouteInterface[] _modules;
+		private RouteControllerInterface[] _modules;
 		#endregion
 		
 		#region accessors
@@ -38,7 +38,7 @@ namespace IbanOop
 			public MainMenu(CountryEntityController CountryEntityController)
 			{
 				this._countryEntityController = CountryEntityController;
-				RouteInterface[] Modules = this.LoadModules();
+				RouteControllerInterface[] Modules = this.LoadModules();
 				
 				MenuChoice[] menuElements = new MenuChoice[Modules.Length+1];
 				for (int i = 0; i < Modules.Length; i++)
@@ -52,12 +52,12 @@ namespace IbanOop
 		#endregion
 		
 		#region workers
-		private RouteInterface[] LoadModules() {
-			RouteInterface[]  Modules = {
+		private RouteControllerInterface[] LoadModules() {
+			RouteControllerInterface[]  Modules = {
 				new GenerateIbanController(),
 				new ValidateIbanController(),
 			};
-			foreach(RouteInterface module in Modules) {
+			foreach(RouteControllerInterface module in Modules) {
 				module.Init(this._countryEntityController);
 			}
 			return Modules;

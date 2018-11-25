@@ -6,7 +6,7 @@ using System;
 
 namespace IbanOop
 {
-	public class GenerateIbanIOHandler
+	public class GenerateIbanIOHandler : AbstractIOHandler
 	{
 		#region properties
 		#endregion
@@ -20,27 +20,19 @@ namespace IbanOop
 		#region workers
 		public void PrintResult(string iban) {
 			
-			OutputUtilities.PrintHeader();
+			PrintHeader();
 			Console.ForegroundColor = ConsoleColor.Green;
-			Console.Write(OutputUtilities.SpaceShifter(iban,4));
+			Console.Write(SpaceShifter(iban,4));
 			Console.ResetColor();
-			OutputUtilities.Wait(true);
+			Wait(true);
 		}
 		
-	   private IbanFormatKeyEntity GetFieldEntityByKey(IbanFormatKeyEntity[] IbanFormatKeyEntities,string key) {
-			IbanFormatKeyEntity IbanFormatKeyEntity = new IbanFormatKeyEntity(null,null);
-			foreach(IbanFormatKeyEntity e in IbanFormatKeyEntities) {
-				if (e._key == key)
-					IbanFormatKeyEntity = e;
-			}
-			return IbanFormatKeyEntity;
-		}
-		
-		private void fetchBbanOutput(IbanFormatKeyEntity[] ibanFormatKeyEntities,bool success,string country,string fieldId,string iban,int pos) {
-			IbanFormatKeyEntity FieldEntity = this.GetFieldEntityByKey(ibanFormatKeyEntities,fieldId);
+		private void fetchBbanOutput(bool success,CountryEntity CountryEntity,string input,int pos) {
+			string fieldId = CountryEntity._ibanFormat.Substring(pos,1);
+			IbanFormatKeyEntity FieldEntity = GetFieldEntityByKey(_ibanFormatKeyEntities,fieldId);
 			string field = FieldEntity._name;
-	     	OutputUtilities.PrintHeader();
-	        Console.WriteLine("Land: " + country);
+	     	PrintHeader();
+	        Console.WriteLine("Land: " + CountryEntity._countryName);
 	        if (field!="" && success!=true) {
 	       	 	Console.WriteLine("Bitte "+ field +" eingeben");
 	        } else {
@@ -50,33 +42,23 @@ namespace IbanOop
 	       	Console.Write("IBAN: ");
 	        if (success==true) {
 				Console.ForegroundColor = ConsoleColor.Green;
-				Console.Write(OutputUtilities.SpaceShifter(iban,4));
+				Console.Write(SpaceShifter(input,4));
 				Console.ResetColor();
 				Console.WriteLine();
 	        } else {
-	       		int spacesToAdd = iban.Length/4;
+	       		int spacesToAdd = input.Length/4;
 	       		int posSpaces = pos/4;
-	       		iban = OutputUtilities.SpaceShifter(iban,4);
-	        	Console.Write(iban.Substring(0,pos+posSpaces));
+	       		input = SpaceShifter(input,4);
+	        	Console.Write(input.Substring(0,pos+posSpaces));
 	        	Console.ForegroundColor = ConsoleColor.Red;
-	            Console.Write(iban.Substring(pos+posSpaces,1));
+	            Console.Write(input.Substring(pos+posSpaces,1));
 	       		Console.ResetColor();
-	            Console.Write(iban.Substring(pos+posSpaces+1));
+	            Console.Write(input.Substring(pos+posSpaces+1));
 	        }
 		}
 		
 	   public string fetchBban(CountryEntity CountryEntity)
 	   {
-			
-	   		IbanFormatKeyEntity[] IbanFormatKeyEntities = {
-				new IbanFormatKeyEntity( "b","BIC/BLZ"),
-				new IbanFormatKeyEntity( "k","Account Number/Kontonummer"),
-				new IbanFormatKeyEntity( "d","Account Number/Kontonummer (Account-Type)"),
-				new IbanFormatKeyEntity( "K","Account Number/Kontonummer (Control Number)"),
-				new IbanFormatKeyEntity( "s","Branch Code"),
-				new IbanFormatKeyEntity( "r","Regional Code"),
-			};
-	   	
 	   		bool allowLetter;
 			bool allowNumber;
 	   		char ckiChar;
@@ -87,12 +69,12 @@ namespace IbanOop
 	   		string input = "";
 	   		int pos = 4;	//pos 0-3 reservered; 0-1: country code; 2-3: verification number
 	   		
-	   		OutputUtilities.PrintHeader();
+	   		PrintHeader();
 	   		
 	   		while (pos!=CountryEntity._ibanLength) {
 	   			bban = CountryEntity._ibanFormat.Substring(0,4) + input + CountryEntity._ibanFormat.Substring(4).Substring(input.Length);
-	   			this.fetchBbanOutput(IbanFormatKeyEntities,false,CountryEntity._countryName,CountryEntity._ibanFormat.Substring(pos,1),bban,pos);
-	   			IbanFormatKeyEntity FieldEntity = this.GetFieldEntityByKey(IbanFormatKeyEntities,CountryEntity._ibanFormat.Substring(pos,1));
+	   			this.fetchBbanOutput(false,CountryEntity,bban,pos);
+	   			IbanFormatKeyEntity FieldEntity = GetFieldEntityByKey(_ibanFormatKeyEntities,CountryEntity._ibanFormat.Substring(pos,1));
 	   			bool isNumeric = int.TryParse(CountryEntity._ibanFormat.Substring(pos,1), out n);
 	   			if (isNumeric==true) {	// costa rica fix (costa rica bban always begins with a "0")
 			  			input = input + CountryEntity._ibanFormat.Substring(pos,1);
@@ -107,11 +89,11 @@ namespace IbanOop
 						} else {
 							allowNumber=true;
 							allowLetter=true;
-							Console.WriteLine(CountryEntity._bbanFormat.Substring(pos-4,1));
 							if (CountryEntity._bbanFormat.Substring(pos-4,1)=="n") {
 								allowLetter=false;
 							} else if (CountryEntity._bbanFormat.Substring(pos-4,1)=="a") {
 								allowNumber=false;
+								allowLetter=true;
 							}
 							if ((cki.Key.ToString()=="Enter") || (ckiChar >= 48 && ckiChar <= 57) || (ckiChar >= 65 && ckiChar <= 90) || (ckiChar >= 97 && ckiChar <= 122) )
 					        {
@@ -127,8 +109,11 @@ namespace IbanOop
 									}
 									input = inputnew +  input.Substring(index-4);
 								}
-								else if (((allowNumber==true) && (ckiChar >= 48 && ckiChar <= 57)) || ((allowLetter==true) && ((ckiChar >= 65 && ckiChar <= 90))))
-								{
+							else if (
+					       	(ckiChar >= 48 && ckiChar <= 57 && allowNumber==true)
+					       	|| (ckiChar >= 65 && ckiChar <= 90 && allowLetter==true)
+					       	|| (ckiChar >= 97 && ckiChar <= 122 && allowLetter==true)
+					       ) {
 						  			input = input + ckiChar.ToString().ToUpper();
 						      	   	pos++;
 								}

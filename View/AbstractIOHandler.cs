@@ -6,9 +6,20 @@ using System;
 
 namespace IbanOop
 {
-	public class OutputUtilities
+	public abstract class AbstractIOHandler
 	{
 		#region properties
+		
+   		protected static IbanFormatKeyEntity[] _ibanFormatKeyEntities = {
+			new IbanFormatKeyEntity( "p","Prüfziffer"),
+			new IbanFormatKeyEntity( "b","BIC/BLZ"),
+			new IbanFormatKeyEntity( "k","Account Number/Kontonummer"),
+			new IbanFormatKeyEntity( "d","Account Number/Kontonummer (Account-Type)"),
+			new IbanFormatKeyEntity( "K","Account Number/Kontonummer (Control Number)"),
+			new IbanFormatKeyEntity( "s","Branch Code"),
+			new IbanFormatKeyEntity( "r","Regional Code"),
+		};
+		
 	    private static string[] _header = {
 	        " ██╗██████╗  █████╗ ███╗   ██╗",
 	        " ██║██╔══██╗██╔══██╗████╗  ██║",
@@ -28,6 +39,14 @@ namespace IbanOop
 		
 		#region workers
 		
+	   protected static IbanFormatKeyEntity GetFieldEntityByKey(IbanFormatKeyEntity[] IbanFormatKeyEntities,string key) {
+			IbanFormatKeyEntity IbanFormatKeyEntity = new IbanFormatKeyEntity(null,null);
+			foreach(IbanFormatKeyEntity e in IbanFormatKeyEntities) {
+				if (e._key == key)
+					IbanFormatKeyEntity = e;
+			}
+			return IbanFormatKeyEntity;
+		}
 		/*
 		 *  Waits for User interaction
 		 *	note: method overloading.
@@ -62,7 +81,7 @@ namespace IbanOop
 		{
 		    Console.Clear();
 		    Console.ForegroundColor = ConsoleColor.DarkRed;
-		    foreach (string line in OutputUtilities._header)
+		    foreach (string line in AbstractIOHandler._header)
 		    {
 		        System.Console.Write(line + "\n");
 		    }
@@ -82,7 +101,7 @@ namespace IbanOop
 			ThrowError(errorMsg,exception.Message);
 		}
 		public static void ThrowError(string errorMsg,string exceptionMsg) {
-			OutputUtilities.PrintHeader();
+			AbstractIOHandler.PrintHeader();
 			Console.ForegroundColor = ConsoleColor.Red;
 			Console.WriteLine("");
 			Console.Write("Fehler: ");
@@ -90,13 +109,13 @@ namespace IbanOop
 			Console.WriteLine(errorMsg);
 			Console.WriteLine("");
 			Console.WriteLine(exceptionMsg);
-			OutputUtilities.Wait();
+			AbstractIOHandler.Wait();
 		}
 		
 		/*
 		 *	Adds Spaces to a String stepwise
 		 */
-		public static string SpaceShifter(string str,int step) {
+		protected static string SpaceShifter(string str,int step) {
 			for (int i = step; i <= str.Length; i += step)
 			    {
 			        str = str.Insert(i, " ");

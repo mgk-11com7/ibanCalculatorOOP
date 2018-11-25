@@ -31,7 +31,7 @@ namespace IbanOop
 			} catch (Exception exception)  {
 				if (tries==0) {
 					data = new string[] { "error" };
-					OutputUtilities.ThrowError("Cant Load " + filename/*,exception*/);
+					AbstractIOHandler.ThrowError("Cant Load " + filename/*,exception*/);
        				System.Environment.Exit(1);
 				} else {
 					data = this.LoadCsvRecursive(filename, "../" + path,tries-1);

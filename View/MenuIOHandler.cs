@@ -6,7 +6,7 @@ using System;
 
 namespace IbanOop
 {
-	public class MenuIOHandler
+	public class MenuIOHandler : AbstractIOHandler
 	{
 		#region properties
 		#endregion
@@ -72,7 +72,7 @@ namespace IbanOop
 			string elementSelectedPrefix = menu.GetElementSelectedPrefix();
 			string elementNotSelectedPrefix = menu.GetElementNotSelectedPrefix();
 			float floatMaxPages = (float) elements.Length/(float) maxElementsPerPage;
-			OutputUtilities.PrintHeader();
+			PrintHeader();
 		    Console.WriteLine("Nutzen Sie die Pfeiltasten zum Navigieren und Enter zum Auswählen\n");
 			for(int i=0;i<elements.Length;i++) {
 		    	if (maxElementsPerPage*page>i && i+1>maxElementsPerPage*(page-1))  {

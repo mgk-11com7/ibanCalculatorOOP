@@ -6,52 +6,80 @@ using System;
 
 namespace IbanOop
 {
-	public class ValidateIbanIOHandler
+	public class ValidateIbanIOHandler : AbstractIOHandler
 	{
 		#region properties
+		private CountryEntityController _countryEntityController;
 		#endregion
 		
 		#region accessors
 		#endregion
 		
 		#region constructors
+		public ValidateIbanIOHandler(CountryEntityController CountryEntityController) {
+			this._countryEntityController = CountryEntityController;
+		}
 		#endregion
 		
 		#region workers
-		   public void ValidateIbanOutput(bool success,string ibanFormatLine,string iban,bool showResult) {
-			  	OutputUtilities.PrintHeader();
-			  	if (ibanFormatLine.Length==0) {
-			  		Console.WriteLine("");
-			  	} else {
-			  		Console.WriteLine("IBAN Format: " + OutputUtilities.SpaceShifter(ibanFormatLine,4));
+	   	public void ValidateIbanOutput(bool success,CountryEntity CountryEntity,string iban,bool showResult,int pos) {
+			IbanFormatKeyEntity FieldEntity;
+			string field = null;
+			string ibanFormatLine = CountryEntity._ibanFormat;
+		  	PrintHeader();
+		  	if (showResult==false) {
+				if (pos<2) {
+	   	 		Console.WriteLine();
+	   	 		Console.WriteLine();
+	       	 		field = "Ländercode";
+				}
+			  	if (CountryEntity._ibanLength==0) {	
+		  			
+		  		} else { 
+			  		if (CountryEntity._ibanLength!=pos) {
+						FieldEntity = GetFieldEntityByKey(_ibanFormatKeyEntities,CountryEntity._ibanFormat.Substring(pos,1));
+						field = FieldEntity._name;
+			  		}
+			  		if (pos<4) {
+			       	 	field = "Prüfziffer";
+			  		}
+			  		Console.WriteLine("Land: " + CountryEntity._countryName);
+			  		Console.WriteLine("IBAN Format: " + SpaceShifter(ibanFormatLine,4));
 			  	}
-			  	if (showResult==false) {
-			  		Console.Write("IBAN: " + OutputUtilities.SpaceShifter(iban,4));
-			  	} else  {
-			      	if (success==true) {
-			  			Console.Write("IBAN: ");
-			        	Console.ForegroundColor = ConsoleColor.Green;
-			  			Console.Write(OutputUtilities.SpaceShifter(iban,4));
-			   			Console.ResetColor();
-			      		Console.Write(" ist");
-			        	Console.ForegroundColor = ConsoleColor.Green;
-			      		Console.Write(" VALIDE");
-			      	} else {
-			  			Console.Write("IBAN: ");
-			        	Console.ForegroundColor = ConsoleColor.Red;
-			  			Console.Write(OutputUtilities.SpaceShifter(iban,4));
-			   			Console.ResetColor();
-			      		Console.Write(" ist");
-			        	Console.ForegroundColor = ConsoleColor.Red;
-			      		Console.Write(" NICHT VALIDE");
-			      	}
-			  	}
-			   	Console.ResetColor();
-			  	Console.WriteLine("");
-			}
+		        if (field!=null && field!="") {
+		       	 	Console.WriteLine("Bitte "+ field +" eingeben");
+		        }
+			  	Console.Write("IBAN: " + SpaceShifter(iban,4));
+		  	} else  {
+	   	 		Console.WriteLine();
+	   	 		Console.WriteLine();
+	   	 		Console.WriteLine();
+		      	if (success==true) {
+		  			Console.Write("IBAN: ");
+		        	Console.ForegroundColor = ConsoleColor.Green;
+		  			Console.Write(SpaceShifter(iban,4));
+		   			Console.ResetColor();
+		      		Console.Write(" ist");
+		        	Console.ForegroundColor = ConsoleColor.Green;
+		      		Console.Write(" VALIDE");
+		      	} else {
+		  			Console.Write("IBAN: ");
+		        	Console.ForegroundColor = ConsoleColor.Red;
+		  			Console.Write(SpaceShifter(iban,4));
+		   			Console.ResetColor();
+		      		Console.Write(" ist");
+		        	Console.ForegroundColor = ConsoleColor.Red;
+		      		Console.Write(" NICHT VALIDE");
+		      	}
+	   	 		Console.WriteLine();
+	   	 		Console.WriteLine();
+		  	}
+		   	Console.ResetColor();
+		}
 			
-		   public string ValidateIbanInput(CountryEntityController CountryEntityController)
+		   public string ValidateIbanInput()
 		   {
+		   	CountryEntityController CountryEntityController = this._countryEntityController;
 			CountryEntity CountryEntity = new CountryEntity();
 			ConsoleKeyInfo key;
 			string ibanFormat = "";
@@ -96,7 +124,7 @@ namespace IbanOop
 			  			input = input + CountryEntity._ibanFormat.Substring(pos,1);
 			      	   	pos++;
 					} else {
-						this.ValidateIbanOutput(false,ibanFormat,input,false);
+						this.ValidateIbanOutput(false,CountryEntity,input,false,pos);
 				        key = Console.ReadKey(true);
 				        cki = key.KeyChar;
 				        if (key.Key.ToString()=="Backspace" && pos>0) {
@@ -117,7 +145,7 @@ namespace IbanOop
 					}
 				}
 			}
-			this.ValidateIbanOutput(false,ibanFormat,input,false);
+			this.ValidateIbanOutput(false,CountryEntity,input,false,pos);
 			return input;
 		   }
 		#endregion
