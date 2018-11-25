@@ -33,9 +33,7 @@ namespace IbanOop
 	   	 		Console.WriteLine();
 	       	 		field = "Ländercode";
 				}
-			  	if (CountryEntity._ibanLength==0) {	
-		  			
-		  		} else { 
+			  	if (CountryEntity._ibanLength!=0) {
 			  		if (CountryEntity._ibanLength!=pos) {
 						FieldEntity = GetFieldEntityByKey(_ibanFormatKeyEntities,CountryEntity._ibanFormat.Substring(pos,1));
 						field = FieldEntity._name;
@@ -46,7 +44,7 @@ namespace IbanOop
 			  		Console.WriteLine("Land: " + CountryEntity._countryName);
 			  		Console.WriteLine("IBAN Format: " + SpaceShifter(ibanFormatLine,4));
 			  	}
-		        if (field!=null && field!="") {
+		  		if (!String.IsNullOrEmpty(field)) {
 		       	 	Console.WriteLine("Bitte "+ field +" eingeben");
 		        }
 			  	Console.Write("IBAN: " + SpaceShifter(iban,4));
@@ -80,7 +78,7 @@ namespace IbanOop
 		   public string ValidateIbanInput()
 		   {
 		   	CountryEntityController CountryEntityController = this._countryEntityController;
-			CountryEntity CountryEntity = new CountryEntity();
+			CountryEntity CountryEntity=null;
 			ConsoleKeyInfo key;
 			string ibanFormat = "";
 			string input="";
@@ -92,6 +90,7 @@ namespace IbanOop
 			bool isNumeric = false;
 			while (ibanFormat.Length==0 || pos!=ibanFormat.Length) {
 		    	if (pos<2) {	//CountryAbbreviation Input
+					CountryEntity = new CountryEntity();
 					allowLetter=true;
 					allowNumber=false;
 				}
@@ -116,8 +115,8 @@ namespace IbanOop
 					isNumeric = int.TryParse(CountryEntity._ibanFormat.Substring(pos,1), out n);
 		    	}
 				if (pos==2 && CountryEntity._countryName==null) {
-				        	input = input.Substring(0,input.Length-1);
-				        	pos--;
+		        	input = input.Substring(0,input.Length-1);
+		        	pos--;
 				} else {
 						
 					if (isNumeric==true) {	// costa rica fix (costa rica bban always begins with a "0")
@@ -131,11 +130,9 @@ namespace IbanOop
 				        	input = input.Substring(0,input.Length-1);
 				        	pos--;
 				        } else {
-					       if (
-					       	(cki >= 48 && cki <= 57 && allowNumber==true)
-					       	|| (cki >= 65 && cki <= 90 && allowLetter==true)
-					       	|| (cki >= 97 && cki <= 122 && allowLetter==true)
-					       ) {
+					       if ((cki >= 48 && cki <= 57 && allowNumber==true)
+					       || (cki >= 65 && cki <= 90 && allowLetter==true)
+					       || (cki >= 97 && cki <= 122 && allowLetter==true)) {
 					  			input = input + cki.ToString().ToUpper();
 					      	   	pos++;
 				        	} else {
