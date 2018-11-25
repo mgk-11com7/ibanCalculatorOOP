@@ -43,16 +43,14 @@ namespace IbanOop
 		private CountryEntity[] CountryEntityLoader() {
 			string[] countries;
 			countries = this.LoadCsvRecursive(CountryEntityController._dataFile,CountryEntityController._dataDirectory,2);
-			
 			CountryEntity[] CountryEntities = new CountryEntity[countries.Length];
-			int c = 0;
-			foreach (string country in countries) {
-				string[] data = country.Split(';');
-				CountryEntities[c] = new CountryEntity(data[0],Int32.Parse(data[1]),data[2],data[3]);
-				c++;
+			for(int i = 0; i < countries.Length; i++) {
+				string[] data = countries[i].Split(';');
+				CountryEntities[i] = new CountryEntity(data[0],Int32.Parse(data[1]),data[2],data[3]);
 			}
 			return CountryEntities;
 		}
+		
 		public CountryEntity GetCountryEntityByCountryAbbreviation(string countryAbbreviation) {
 			CountryEntity countryEntity = new CountryEntity();
 			foreach(CountryEntity e in this._countryEntities) {

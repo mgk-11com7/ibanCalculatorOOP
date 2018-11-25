@@ -26,10 +26,10 @@ namespace IbanOop
 			{
 				CountryEntityController CountryEntityController = this._countryEntityController;
 				GenerateIbanIOHandler GenerateIbanIOHandler = new GenerateIbanIOHandler();
-				
 				CountryEntity[] countryEntities = CountryEntityController._countryEntities;
 				SelectCountryMenu SelectCountryMenu = new SelectCountryMenu(countryEntities);
 				MenuController GenerateIbanMenu = new MenuController(SelectCountryMenu);
+				
 				int pos = GenerateIbanMenu.handle();
 				if (pos<countryEntities.Length) {
 					string bban = GenerateIbanIOHandler.fetchBban(countryEntities[pos]);
