@@ -11,6 +11,8 @@ namespace IbanOop
 		#region properties
 		private const string _dataDirectory = "Ressources/";
 		private const string _dataFile = "countries.csv";
+		
+		//Warum ist das public?
 		public CountryEntity[] _countryEntities;
 		#endregion
 		
@@ -52,6 +54,9 @@ namespace IbanOop
 		}
 		
 		public CountryEntity GetCountryEntityByCountryAbbreviation(string countryAbbreviation) {
+			// Schau mal nach Linq Namespace und dann nach _countryEntities.FirstOrDefault()
+			// und überlege ob es nicht sinnvoller ist null zurückzugeben, wenn es kein
+			// richtiges Ergebnis gibt.
 			CountryEntity countryEntity = new CountryEntity();
 			foreach(CountryEntity e in this._countryEntities) {
 				if (e._countryAbbreviation==countryAbbreviation)
