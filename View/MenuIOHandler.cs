@@ -9,19 +9,21 @@ namespace IbanOop
 	public class MenuIOHandler : AbstractIOHandler
 	{
 		#region properties
+		private LanguageController _languageController;
 		#endregion
 		
 		#region accessors
 		#endregion
 		
 		#region constructors
-			public MenuIOHandler()
+			public MenuIOHandler(LanguageController languageController)
 			{
+				this._languageController = languageController;
 			}
 		#endregion
 		
 		#region workers
-		public static bool input(MenuInterface menu) {
+		public  bool input(MenuInterface menu) {
 			MenuChoice[] elements = menu.GetMenuChoiceElements();
 			int maxElementsPerPage = menu.GetMaxElementsPerPage();
 			int page = menu.GetPage();
@@ -63,8 +65,7 @@ namespace IbanOop
 			menu.SetPage(page);
 	    	return false;
 		}
-			
-		public static void output(MenuInterface menu) {
+		public  void output(MenuInterface menu) {
 			MenuChoice[] elements = menu.GetMenuChoiceElements();
 			int maxElementsPerPage = menu.GetMaxElementsPerPage();
 			int page = menu.GetPage();
@@ -73,10 +74,8 @@ namespace IbanOop
 			string elementNotSelectedPrefix = menu.GetElementNotSelectedPrefix();
 			float floatMaxPages = (float) elements.Length/(float) maxElementsPerPage;
 			PrintHeader();
-		    Console.WriteLine("Nutzen Sie die Pfeiltasten zum Navigieren und Enter zum Auswählen\n");
 			for(int i=0;i<elements.Length;i++) {
 		    	if (maxElementsPerPage*page>i && i+1>maxElementsPerPage*(page-1))  {
-					
 					if (i == pos) {
 						Console.Write(elementSelectedPrefix);
 					} else {
@@ -86,8 +85,10 @@ namespace IbanOop
 				}
 			}
 		    if (Math.Ceiling(floatMaxPages)>1) {
-		   	 	Console.WriteLine("\nSeite " + page.ToString() + " von " + Math.Ceiling(floatMaxPages));
+				Console.WriteLine(this._languageController.loadVar("MenuIOHandlerPageOfMaxPages").Replace("{page}", page.ToString()).Replace("{maxPage}", Math.Ceiling(floatMaxPages).ToString()));
+		   	 //	Console.WriteLine("\nSeite " + page.ToString() + " von " + Math.Ceiling(floatMaxPages));
 		    }
+		    
 		}
 		#endregion
 		

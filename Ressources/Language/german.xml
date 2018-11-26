@@ -1,0 +1,13 @@
+﻿<?xml version="1.0"?>
+<Xml>
+	<MainMenuGenerateIban>Iban generieren</MainMenuGenerateIban>
+	<MainMenuValidateIban>Iban validieren</MainMenuValidateIban>
+	<MainMenuProgramClose>Programm beenden</MainMenuProgramClose>
+	
+	<MenuControlInfo>Nutzen Sie die Pfeiltasten zum Navigieren und Enter zum Auswählen</MenuControlInfo>
+
+	<GenerateIbanEnterField>Bitte {field} eingeben</GenerateIbanEnterField>
+	<MenuIOHandlerPageOfMaxPages>Seite {page} von {maxPage}</MenuIOHandlerPageOfMaxPages>
+	<MenuIOHandlerPageOfMaxPages>Seite {page} von {maxPage}</MenuIOHandlerPageOfMaxPages>
+	<SelectCountryMenuBackToMainMenu>Zurück ins Hauptmenü</SelectCountryMenuBackToMainMenu>
+</Xml>

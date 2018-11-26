@@ -9,37 +9,38 @@ namespace IbanOop
 	public class GenerateIbanController : RouteControllerInterface
 	{
 		#region properties
-		private string _caption = "IBAN generieren";
+		private LanguageController _languageController;
 		private CountryEntityController _countryEntityController;
 		#endregion
 		
 		#region accessors
 		public string GetCaption() {
-			return this._caption;
+			return this._languageController.loadVar("MainMenuGenerateIban");
 		}
 		#endregion
-		public void Init(CountryEntityController CountryEntityController) {
+		public void Init(CountryEntityController CountryEntityController,LanguageController languageController) {
+			this._languageController = languageController;
 			this._countryEntityController = CountryEntityController;
 		}
 		#region constructors
-			public void Handle()
-			{
-				CountryEntityController CountryEntityController = this._countryEntityController;
-				GenerateIbanIOHandler GenerateIbanIOHandler = new GenerateIbanIOHandler();
-				CountryEntity[] countryEntities = CountryEntityController._countryEntities;
-				SelectCountryMenu SelectCountryMenu = new SelectCountryMenu(countryEntities);
-				MenuController GenerateIbanMenu = new MenuController(SelectCountryMenu);
-				
-				int pos = GenerateIbanMenu.handle();
-				if (pos<countryEntities.Length) {
-					string bban = GenerateIbanIOHandler.fetchBban(countryEntities[pos]);
-					IbanEntity IbanEntity = new IbanEntity(countryEntities[pos],bban);
-					GenerateIbanIOHandler.PrintResult(IbanEntity.GetIban());
-				} else {
-					//Back to main menu
-				}
+		public void Handle()
+		{
+			CountryEntityController CountryEntityController = this._countryEntityController;
+			GenerateIbanIOHandler GenerateIbanIOHandler = new GenerateIbanIOHandler(this._languageController);
+			CountryEntity[] countryEntities = CountryEntityController._countryEntities;
+			SelectCountryMenu SelectCountryMenu = new SelectCountryMenu(this._languageController,countryEntities);
+			MenuController GenerateIbanMenu = new MenuController(SelectCountryMenu,this._languageController);
+			
+			int pos = GenerateIbanMenu.Handle();
+			if (pos<countryEntities.Length) {
+				string bban = GenerateIbanIOHandler.fetchBban(countryEntities[pos]);
+				IbanEntity IbanEntity = new IbanEntity(countryEntities[pos],bban);
+				GenerateIbanIOHandler.PrintResult(IbanEntity.GetIban());
+			} else {
 				//Back to main menu
 			}
+			//Back to main menu
+		}
 		#endregion
 		
 		#region workers

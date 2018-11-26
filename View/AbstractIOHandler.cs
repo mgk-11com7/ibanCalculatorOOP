@@ -3,23 +3,11 @@
  * Date: 20.11.2018
  */
 using System;
-
 namespace IbanOop
 {
 	public abstract class AbstractIOHandler
 	{
 		#region properties
-		
-   		protected static IbanFormatKeyEntity[] _ibanFormatKeyEntities = {
-			new IbanFormatKeyEntity( "p","Prüfziffer"),
-			new IbanFormatKeyEntity( "b","BIC/BLZ"),
-			new IbanFormatKeyEntity( "k","Account Number/Kontonummer"),
-			new IbanFormatKeyEntity( "d","Account Number/Kontonummer (Account-Type)"),
-			new IbanFormatKeyEntity( "K","Account Number/Kontonummer (Control Number)"),
-			new IbanFormatKeyEntity( "s","Branch Code"),
-			new IbanFormatKeyEntity( "r","Regional Code"),
-		};
-		
 	    private static string[] _header = {
 	        " ██╗██████╗  █████╗ ███╗   ██╗",
 	        " ██║██╔══██╗██╔══██╗████╗  ██║",
@@ -29,6 +17,8 @@ namespace IbanOop
 	        " ╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝",
 	        "",
 	    };
+		
+		protected static IbanFormatKeyEntity[] _ibanFormatKeyEntities = IbanFormatKeyEntityBuilder();
 		#endregion
 		
 		#region accessors
@@ -38,6 +28,19 @@ namespace IbanOop
 		#endregion
 		
 		#region workers
+		
+		private static IbanFormatKeyEntity[] IbanFormatKeyEntityBuilder() {
+			IbanFormatKeyEntity[] ibanFormatKeyEntities = {
+				new IbanFormatKeyEntity( "p","Prüfziffer"),
+				new IbanFormatKeyEntity( "b","BIC/BLZ"),
+				new IbanFormatKeyEntity( "k","Account Number/Kontonummer"),
+				new IbanFormatKeyEntity( "d","Account Number/Kontonummer (Account-Type)"),
+				new IbanFormatKeyEntity( "K","Account Number/Kontonummer (Control Number)"),
+				new IbanFormatKeyEntity( "s","Branch Code"),
+				new IbanFormatKeyEntity( "r","Regional Code"),
+			};
+			return ibanFormatKeyEntities;
+		}
 		
 	   protected static IbanFormatKeyEntity GetFieldEntityByKey(IbanFormatKeyEntity[] IbanFormatKeyEntities,string key) {
 			IbanFormatKeyEntity IbanFormatKeyEntity = new IbanFormatKeyEntity(null,null);

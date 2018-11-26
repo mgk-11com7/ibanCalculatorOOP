@@ -11,7 +11,7 @@ namespace IbanOop
 		#region constructors
 		public static void Main(string[] args)
 		{
-			new MenuController(new MainMenu(new CountryEntityController())).run();
+			new IbanCalculator();
 		}
 		#endregion
 	}

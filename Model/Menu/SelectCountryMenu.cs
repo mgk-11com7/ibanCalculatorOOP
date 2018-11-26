@@ -42,7 +42,7 @@ namespace IbanOop
 		#endregion
 		
 		#region constructors
-			public SelectCountryMenu(CountryEntity[] countryEntities)
+			public SelectCountryMenu(LanguageController languageController,CountryEntity[] countryEntities)
 			{
 				this._countryEntities = countryEntities;
 				MenuChoice[] menuElements= new MenuChoice[countryEntities.Length+1];
@@ -50,7 +50,7 @@ namespace IbanOop
 				{
 					menuElements[i] =  new MenuChoice(countryEntities[i]._countryName);
 				}
-				menuElements[countryEntities.Length] =  new MenuChoice("Zurück ins Hauptmenü");
+				menuElements[countryEntities.Length] =  new MenuChoice(languageController.loadVar("SelectCountryMenuBackToMainMenu"));
 				this._elements = menuElements;
 			}
 		#endregion

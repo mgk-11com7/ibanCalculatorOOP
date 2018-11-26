@@ -11,6 +11,6 @@ namespace IbanOop
 	{
 		string GetCaption(); // string to be displayed in the menu
 		void Handle(); // holds the MenuChoice callback
-		void Init(CountryEntityController CountryEntityController);
+		void Init(CountryEntityController CountryEntityController,LanguageController LanguageController);
 	}
 }

@@ -9,6 +9,7 @@ namespace IbanOop
 	public class GenerateIbanIOHandler : AbstractIOHandler
 	{
 		#region properties
+		private LanguageController _languageController;
 		#endregion
 		
 		#region accessors
@@ -18,6 +19,10 @@ namespace IbanOop
 		#endregion
 		
 		#region workers
+		public  GenerateIbanIOHandler(LanguageController languageControllerr) {
+			this._languageController = languageControllerr;
+		}
+		
 		public void PrintResult(string iban) {
 			
 			PrintHeader();
@@ -34,7 +39,7 @@ namespace IbanOop
 	     	PrintHeader();
 	        Console.WriteLine("Land: " + CountryEntity._countryName);
 	        if (field!="" && success!=true) {
-	       	 	Console.WriteLine("Bitte "+ field +" eingeben");
+	       	 	Console.WriteLine(this._languageController.loadVar("GenerateIbanEnterField").Replace("{field}", field));
 	        } else {
 	        	Console.WriteLine();
 	        }
@@ -59,8 +64,8 @@ namespace IbanOop
 		
 	   public string fetchBban(CountryEntity CountryEntity)
 	   {
-	   		bool allowLetter;
-			bool allowNumber;
+	   		bool allowLetter=true;
+			bool allowNumber=true;
 	   		char ckiChar;
 			ConsoleKeyInfo cki;
 			int n;
@@ -87,12 +92,14 @@ namespace IbanOop
 					    	input = input.Substring(0,input.Length-1);
 					    	pos--;
 						} else {
-							allowNumber=true;
-							allowLetter=true;
 							if (CountryEntity._bbanFormat.Substring(pos-4,1)=="n") {
+								allowNumber=true;
 								allowLetter=false;
 							} else if (CountryEntity._bbanFormat.Substring(pos-4,1)=="a") {
 								allowNumber=false;
+								allowLetter=true;
+							} else if (CountryEntity._bbanFormat.Substring(pos-4,1)=="c") {
+								allowNumber=true;
 								allowLetter=true;
 							}
 							if ((cki.Key.ToString()=="Enter") || (ckiChar >= 48 && ckiChar <= 57) || (ckiChar >= 65 && ckiChar <= 90) || (ckiChar >= 97 && ckiChar <= 122) )
@@ -110,10 +117,10 @@ namespace IbanOop
 									input = inputnew +  input.Substring(index-4);
 								}
 							else if (
-					       	(ckiChar >= 48 && ckiChar <= 57 && allowNumber==true)
-					       	|| (ckiChar >= 65 && ckiChar <= 90 && allowLetter==true)
-					       	|| (ckiChar >= 97 && ckiChar <= 122 && allowLetter==true)
-					       ) {
+						       	(ckiChar >= 48 && ckiChar <= 57 && allowNumber==true)
+						       	|| (ckiChar >= 65 && ckiChar <= 90 && allowLetter==true)
+						       	|| (ckiChar >= 97 && ckiChar <= 122 && allowLetter==true)
+					       	) {
 						  			input = input + ckiChar.ToString().ToUpper();
 						      	   	pos++;
 								}

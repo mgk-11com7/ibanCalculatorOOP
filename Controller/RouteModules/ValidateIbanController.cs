@@ -9,16 +9,17 @@ namespace IbanOop
 	public class ValidateIbanController : RouteControllerInterface
 	{
 		#region properties
-		private string _caption = "IBAN validieren";
 		private CountryEntityController _countryEntityController;
+		private LanguageController _languageController;
 		#endregion
 		
 		#region accessors
 		public string GetCaption() {
-			return this._caption;
+			return this._languageController.loadVar("MainMenuValidateIban");
 		}
 		#endregion
-		public void Init(CountryEntityController CountryEntityController) {
+		public void Init(CountryEntityController CountryEntityController,LanguageController languageController) {
+			this._languageController = languageController;
 			this._countryEntityController = CountryEntityController;
 		}
 		#region workers

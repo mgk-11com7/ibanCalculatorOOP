@@ -9,6 +9,7 @@ namespace IbanOop
 	public class MainMenu : MenuStyleTwo,MenuInterface
 	{
 		#region properties
+		private LanguageController _languageController;
 		private int _page = 1;
 		private int _pos = 0;
 		public MenuChoice[] _elements;
@@ -35,18 +36,17 @@ namespace IbanOop
 		#endregion
 		
 		#region constructors
-			public MainMenu(CountryEntityController CountryEntityController)
+			public MainMenu(CountryEntityController CountryEntityController,LanguageController languageController)
 			{
+				this._languageController = languageController;
 				this._countryEntityController = CountryEntityController;
 				RouteControllerInterface[] Modules = this.LoadModules();
-				
 				MenuChoice[] menuElements = new MenuChoice[Modules.Length+1];
 				for (int i = 0; i < Modules.Length; i++)
 				{
 					menuElements[i] = new MenuChoice(Modules[i].GetCaption(),Modules[i].Handle);
 				}
-				menuElements[Modules.Length] = new MenuChoice("Programm beenden",this.ExitRoute);
-				
+				menuElements[Modules.Length] = new MenuChoice(languageController.loadVar("MainMenuProgramClose"),this.ExitRoute);
 				this._elements = menuElements;
 			}
 		#endregion
@@ -58,7 +58,7 @@ namespace IbanOop
 				new ValidateIbanController(),
 			};
 			foreach(RouteControllerInterface module in Modules) {
-				module.Init(this._countryEntityController);
+				module.Init(this._countryEntityController,this._languageController);
 			}
 			return Modules;
 		}
